@@ -6,10 +6,13 @@
 
   --color-surface: #09090b;
   --color-body: #d4d4d8;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -20,10 +23,23 @@ body {
   min-height: 100vh;
 }
 
-/* Clean custom scrollbar */
+/* Tailwind v4 mengembalikan cursor default pada <button>; kembalikan pointer. */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
+/* Fokus keyboard yang terlihat untuk semua elemen interaktif. */
+:focus-visible {
+  outline: 2px solid #e4e4e7;
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #09090b;
@@ -41,17 +57,41 @@ body {
   color: #09090b;
 }
 
-/* Utility: sembunyikan scrollbar pada nav yang dapat digeser di layar kecil */
 .no-scrollbar {
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
+/* Grid titik halus di belakang hero, memudar ke bawah. */
+.bg-dot-grid {
+  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 30% 30%, #000 30%, transparent 75%);
+}
+
+/* Scroll reveal: hanya aktif setelah JS menandai elemen, jadi konten tak pernah tersembunyi tanpa JS. */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms var(--ease-out-expo),
+    transform 400ms var(--ease-out-expo);
+}
+.reveal-pending.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
