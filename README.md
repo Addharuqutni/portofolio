@@ -87,15 +87,16 @@ portfolio/
     │   └── portfolio.js    # ⭐ SEMUA KONTEN DI SINI
     ├── hooks/
     │   ├── useClipboard.js # Salin ke clipboard + fallback
-    │   └── useToast.js     # State notifikasi toast
+    │   ├── useToast.js     # State notifikasi toast
+    │   └── useScrollEffects.js # Seksi aktif + scroll reveal
     ├── context/
     │   └── ToastContext.jsx
     └── components/
-        ├── Header.jsx      # Navigasi sticky
+        ├── Header.jsx      # Navigasi sticky + indikator seksi aktif + skip link
         ├── Hero.jsx        # Seksi pembuka + aksi cepat
-        ├── Skills.jsx      # 01. Keahlian teknis
-        ├── Experience.jsx  # 02. Pengalaman kerja
-        ├── Projects.jsx    # 03. Proyek pilihan
+        ├── Skills.jsx      # 02. Keahlian teknis
+        ├── Experience.jsx  # 03. Pengalaman kerja (timeline)
+        ├── Projects.jsx    # 01. Proyek pilihan
         ├── Education.jsx   # 04. Pendidikan & sertifikasi
         ├── Contact.jsx     # 05. Kontak
         ├── Footer.jsx

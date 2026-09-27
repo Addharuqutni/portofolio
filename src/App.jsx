@@ -1,4 +1,5 @@
 import { ToastProvider } from './context/ToastContext.jsx'
+import { useReveal } from './hooks/useScrollEffects.js'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import Skills from './components/Skills.jsx'
@@ -9,15 +10,17 @@ import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 
 export default function App() {
+  useReveal()
+
   return (
     <ToastProvider>
       <Header />
 
-      <main className="mx-auto max-w-6xl space-y-16 px-5 py-10 sm:px-8 sm:py-16">
+      <main id="main" className="mx-auto max-w-6xl space-y-24 overflow-x-clip px-5 pb-20 pt-6 sm:space-y-32 sm:px-8">
         <Hero />
+        <Projects />
         <Skills />
         <Experience />
-        <Projects />
         <Education />
         <Contact />
       </main>
