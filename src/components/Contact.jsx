@@ -22,7 +22,7 @@ export default function Contact() {
     <section id="kontak" aria-labelledby="kontak-title" className="space-y-8">
       <SectionHeading
         id="kontak-title"
-        index="05"
+        index="06"
         title="Hubungi Saya"
         subtitle="Terbuka untuk posisi full-time, freelance, maupun diskusi teknis."
       />

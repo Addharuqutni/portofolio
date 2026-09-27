@@ -1,23 +1,40 @@
 import { useEffect, useState } from 'react'
 
-/** Mengembalikan id seksi yang sedang berada di tengah viewport. */
+/**
+ * Mengembalikan id seksi yang sedang dibaca: seksi terakhir yang bagian atasnya
+ * sudah melewati garis 35% viewport. Tidak bergantung pada tinggi seksi,
+ * jadi seksi pendek dan celah antar-seksi tetap terdeteksi.
+ */
 export function useActiveSection(ids) {
   const [active, setActive] = useState(null)
 
   useEffect(() => {
-    const elements = ids.map((id) => document.getElementById(id)).filter(Boolean)
-    if (elements.length === 0) return undefined
+    let frame = 0
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id)
-        }
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    )
-    elements.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
+    const update = () => {
+      frame = 0
+      const line = window.innerHeight * 0.35
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+      let current = null
+      for (const id of ids) {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= line) current = id
+      }
+      setActive(atBottom ? ids[ids.length - 1] : current)
+    }
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [ids])
 
   return active
