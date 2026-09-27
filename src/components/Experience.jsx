@@ -1,7 +1,7 @@
 import { experiences } from '../data/portfolio.js'
 import SectionHeading from './SectionHeading.jsx'
 
-/** Seksi 02 — Riwayat pengalaman dalam bentuk timeline. */
+/** Seksi 03 — Riwayat pengalaman dalam bentuk timeline. */
 export default function Experience() {
   return (
     <section id="pengalaman" aria-labelledby="pengalaman-title" className="space-y-8">

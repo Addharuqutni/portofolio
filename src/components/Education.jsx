@@ -1,13 +1,13 @@
 import { education } from '../data/portfolio.js'
 import SectionHeading from './SectionHeading.jsx'
 
-/** Seksi 04 — Pendidikan formal. */
+/** Seksi 02 — Pendidikan formal. */
 export default function Education() {
   return (
     <section id="pendidikan" aria-labelledby="pendidikan-title" className="space-y-8">
       <SectionHeading
         id="pendidikan-title"
-        index="04"
+        index="02"
         title="Pendidikan"
         subtitle="Latar belakang akademik formal di bidang rekayasa perangkat lunak."
       />

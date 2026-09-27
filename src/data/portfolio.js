@@ -22,10 +22,10 @@ export const profile = {
 }
 
 export const navLinks = [
-  { label: 'Proyek', href: '#proyek' },
   { label: 'Keahlian', href: '#keahlian' },
-  { label: 'Pengalaman', href: '#pengalaman' },
   { label: 'Pendidikan', href: '#pendidikan' },
+  { label: 'Pengalaman', href: '#pengalaman' },
+  { label: 'Proyek', href: '#proyek' },
   { label: 'Sertifikasi', href: '#sertifikasi' },
   { label: 'Kontak', href: '#kontak' },
 ]

@@ -8,7 +8,7 @@ export default function Skills() {
     <section id="keahlian" aria-labelledby="keahlian-title" className="space-y-8">
       <SectionHeading
         id="keahlian-title"
-        index="02"
+        index="01"
         title="Keahlian Teknis"
         subtitle="Teknologi dan stack yang digunakan dalam lingkungan produksi."
       />
