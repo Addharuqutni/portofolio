@@ -97,8 +97,9 @@ portfolio/
         ├── Skills.jsx      # 02. Keahlian teknis
         ├── Experience.jsx  # 03. Pengalaman kerja (timeline)
         ├── Projects.jsx    # 01. Proyek pilihan
-        ├── Education.jsx   # 04. Pendidikan & sertifikasi
-        ├── Contact.jsx     # 05. Kontak
+        ├── Education.jsx   # 04. Pendidikan
+        ├── Certifications.jsx # 05. Sertifikasi
+        ├── Contact.jsx     # 06. Kontak
         ├── Footer.jsx
         ├── SectionHeading.jsx
         ├── TechIcon.jsx    # Render ikon Devicon / Lucide

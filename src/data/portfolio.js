@@ -25,7 +25,8 @@ export const navLinks = [
   { label: 'Proyek', href: '#proyek' },
   { label: 'Keahlian', href: '#keahlian' },
   { label: 'Pengalaman', href: '#pengalaman' },
-  { label: 'Pendidikan', href: '#tentang' },
+  { label: 'Pendidikan', href: '#pendidikan' },
+  { label: 'Sertifikasi', href: '#sertifikasi' },
   { label: 'Kontak', href: '#kontak' },
 ]
 
@@ -138,39 +139,39 @@ export const projects = [
 export const education = [
   {
     period: '2021 — 2025',
-    badge: 'IPK 3.81',
-    badgeTone: 'neutral',
-    title: 'S1 Teknik Informatika',
+    level: 'S1',
+    highlight: 'IPK 3.81',
+    title: 'Teknik Informatika',
     institution: 'Universitas Telkom Purwokerto',
     detail:
       'Pengembangan Perangkat Lunak, Pemrosesan Data, Keamanan Informasi, Jaringan Komputer, & Kecerdasan Buatan.',
   },
   {
     period: '2017 — 2020',
-    badge: 'SMK',
-    badgeTone: 'muted',
+    level: 'SMK',
     title: 'Rekayasa Perangkat Lunak',
     institution: 'SMK Telkom Purwokerto',
     detail:
       'Pemrograman Berorientasi Objek (PBO), Basis Data, Web & Mobile, IoT, dan Komunikasi Digital.',
   },
+]
+
+export const certifications = [
   {
-    period: 'Sertifikasi Resmi',
-    periodTone: 'emerald',
-    badge: 'Nasional',
-    badgeTone: 'muted',
     title: 'Junior Web Developer',
-    institution: 'Badan Nasional Sertifikasi Profesi (BNSP)',
+    issuer: 'Badan Nasional Sertifikasi Profesi (BNSP)',
+    type: 'Sertifikasi Resmi',
+    scope: 'Nasional',
+    tone: 'emerald',
     detail:
       'Standar kompetensi pemrograman web terstruktur, implementasi logika backend, dan arsitektur basis data.',
   },
   {
-    period: 'MSIB Bersertifikat',
-    periodTone: 'sky',
-    badge: 'Industri',
-    badgeTone: 'muted',
     title: 'UI/UX Design',
-    institution: 'PT. Impactbyte Teknologi Edukasi (Skilvul)',
+    issuer: 'PT. Impactbyte Teknologi Edukasi (Skilvul)',
+    type: 'MSIB Bersertifikat',
+    scope: 'Industri',
+    tone: 'sky',
     detail:
       'Penerapan Design Thinking, riset audiens, wireframing, high-fidelity UI, serta pengujian prototipe terstruktur.',
   },
