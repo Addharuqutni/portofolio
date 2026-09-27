@@ -1,5 +1,5 @@
 import { ArrowDown, Check, Copy, ExternalLink, MapPin, MessageSquare } from 'lucide-react'
-import { experiences, profile, projects } from '../data/portfolio.js'
+import { profile } from '../data/portfolio.js'
 import { useToastContext } from '../context/ToastContext.jsx'
 import { useClipboard } from '../hooks/useClipboard.js'
 
@@ -7,14 +7,7 @@ const actionBase =
   'inline-flex min-h-11 items-center gap-2 rounded-lg px-4 font-mono text-xs transition-[background-color,border-color,color,transform] duration-150 active:scale-[0.98]'
 const actionSecondary = `${actionBase} border border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-100`
 
-const stats = [
-  { value: '3.81', label: 'IPK S1 Informatika' },
-  { value: String(projects.length), label: 'Proyek pilihan' },
-  { value: String(experiences.length), label: 'Pengalaman profesional' },
-  { value: 'BNSP', label: 'Junior Web Developer' },
-]
-
-/** Seksi pembuka: status, nama, value proposition, aksi cepat, dan fakta singkat. */
+/** Seksi pembuka: status, nama, value proposition, dan aksi cepat. */
 export default function Hero() {
   const { notify } = useToastContext()
   const { copy, copiedKey } = useClipboard()
@@ -86,17 +79,6 @@ export default function Hero() {
             <ExternalLink className="h-4 w-4" aria-hidden="true" /> GitHub
           </a>
         </div>
-
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-zinc-900 bg-zinc-900 sm:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col bg-[#09090b] px-4 py-4 sm:px-5">
-              <dt className="order-2 mt-1 text-xs text-zinc-400">{stat.label}</dt>
-              <dd className="font-mono text-xl font-semibold tracking-tight text-zinc-100 sm:text-2xl">
-                {stat.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   )
