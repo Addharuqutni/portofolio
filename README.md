@@ -94,10 +94,10 @@ portfolio/
     └── components/
         ├── Header.jsx      # Navigasi sticky + indikator seksi aktif + skip link
         ├── Hero.jsx        # Seksi pembuka + aksi cepat
-        ├── Skills.jsx      # 02. Keahlian teknis
+        ├── Skills.jsx      # 01. Keahlian teknis
         ├── Experience.jsx  # 03. Pengalaman kerja (timeline)
-        ├── Projects.jsx    # 01. Proyek pilihan
-        ├── Education.jsx   # 04. Pendidikan
+        ├── Projects.jsx    # 04. Proyek pilihan
+        ├── Education.jsx   # 02. Pendidikan
         ├── Certifications.jsx # 05. Sertifikasi
         ├── Contact.jsx     # 06. Kontak
         ├── Footer.jsx

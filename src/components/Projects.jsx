@@ -1,13 +1,13 @@
 import { projects } from '../data/portfolio.js'
 import SectionHeading from './SectionHeading.jsx'
 
-/** Seksi 03 — Proyek pilihan. */
+/** Seksi 04 — Proyek pilihan. */
 export default function Projects() {
   return (
     <section id="proyek" aria-labelledby="proyek-title" className="space-y-8">
       <SectionHeading
         id="proyek-title"
-        index="01"
+        index="04"
         title="Proyek Pilihan"
         subtitle="Sistem nyata yang telah dirancang, diuji, dan diimplementasikan."
       />

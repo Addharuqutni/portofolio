@@ -19,10 +19,10 @@ export default function App() {
 
       <main id="main" className="mx-auto max-w-6xl space-y-24 overflow-x-clip px-5 pb-20 pt-6 sm:space-y-32 sm:px-8">
         <Hero />
-        <Projects />
         <Skills />
-        <Experience />
         <Education />
+        <Experience />
+        <Projects />
         <Certifications />
         <Contact />
       </main>
