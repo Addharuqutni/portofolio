@@ -4,7 +4,7 @@ import SectionHeading from './SectionHeading.jsx'
 /** Seksi 02 — Pendidikan formal. */
 export default function Education() {
   return (
-    <section id="pendidikan" aria-labelledby="pendidikan-title" className="space-y-8">
+    <section id="pendidikan" aria-labelledby="pendidikan-title" className="space-y-10">
       <SectionHeading
         id="pendidikan-title"
         index="02"
@@ -12,29 +12,38 @@ export default function Education() {
         subtitle="Latar belakang akademik formal di bidang rekayasa perangkat lunak."
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {education.map((item) => (
           <article
             key={`${item.title}-${item.institution}`}
             data-reveal
-            className="flex gap-4 rounded-xl border border-zinc-900 bg-zinc-950 p-5 transition-colors duration-200 hover:border-zinc-800"
+            data-spotlight
+            data-tilt
+            className="glass relative flex flex-col gap-6 overflow-hidden rounded-2xl p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 font-mono text-xs font-semibold text-zinc-200">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-2 -top-6 font-display text-[7rem] font-bold leading-none tracking-tighter text-white/[0.05] select-none"
+            >
               {item.level}
             </span>
 
-            <div className="min-w-0 space-y-2">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <time className="font-mono text-xs text-zinc-500">{item.period}</time>
-                {item.highlight && (
-                  <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-emerald-300">
-                    {item.highlight}
-                  </span>
-                )}
-              </div>
-              <h3 className="text-base font-semibold text-zinc-100">{item.title}</h3>
-              <p className="text-sm text-zinc-300">{item.institution}</p>
-              <p className="text-sm leading-relaxed text-zinc-400">{item.detail}</p>
+            <div className="relative flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span className="rounded-md bg-ink px-2 py-0.5 font-mono text-[11px] font-medium text-canvas">
+                {item.level}
+              </span>
+              <time className="font-mono text-xs text-muted">{item.period}</time>
+              {item.highlight && (
+                <span className="rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">
+                  {item.highlight}
+                </span>
+              )}
+            </div>
+
+            <div className="relative space-y-2">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-ink">{item.title}</h3>
+              <p className="text-sm text-body">{item.institution}</p>
+              <p className="text-sm leading-relaxed text-muted">{item.detail}</p>
             </div>
           </article>
         ))}

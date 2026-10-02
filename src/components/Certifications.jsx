@@ -3,14 +3,14 @@ import { certifications } from '../data/portfolio.js'
 import SectionHeading from './SectionHeading.jsx'
 
 const TONES = {
-  emerald: { icon: 'text-emerald-400', type: 'text-emerald-400' },
-  sky: { icon: 'text-sky-400', type: 'text-sky-400' },
+  emerald: { icon: 'text-accent bg-accent-soft', type: 'text-accent' },
+  sky: { icon: 'text-info bg-info/10', type: 'text-info' },
 }
 
 /** Seksi 05 — Sertifikasi kompetensi. */
 export default function Certifications() {
   return (
-    <section id="sertifikasi" aria-labelledby="sertifikasi-title" className="space-y-8">
+    <section id="sertifikasi" aria-labelledby="sertifikasi-title" className="space-y-10">
       <SectionHeading
         id="sertifikasi-title"
         index="05"
@@ -18,28 +18,31 @@ export default function Certifications() {
         subtitle="Kredensial kompetensi yang diakui secara nasional dan oleh industri."
       />
 
-      <ul className="divide-y divide-zinc-900 overflow-hidden rounded-xl border border-zinc-900 bg-zinc-950">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {certifications.map((cert) => {
           const tone = TONES[cert.tone] ?? TONES.emerald
           return (
             <li
               key={`${cert.title}-${cert.issuer}`}
               data-reveal
-              className="grid gap-3 p-5 transition-colors duration-200 hover:bg-zinc-900/40 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-5 sm:p-6"
+              data-spotlight
+              data-tilt
+              className="glass relative flex flex-col gap-5 rounded-2xl p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
             >
-              <BadgeCheck className={`h-6 w-6 ${tone.icon}`} aria-hidden="true" />
-
-              <div className="min-w-0 space-y-1.5">
-                <h3 className="text-base font-semibold text-zinc-100">{cert.title}</h3>
-                <p className="text-sm text-zinc-300">{cert.issuer}</p>
-                <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">{cert.detail}</p>
+              <div className="flex items-start justify-between gap-3">
+                <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${tone.icon}`}>
+                  <BadgeCheck className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="flex flex-col items-end gap-1.5 font-mono text-[11px]">
+                  <span className={tone.type}>{cert.type}</span>
+                  <span className="rounded-full border border-glass-strong px-2.5 py-0.5 text-muted">{cert.scope}</span>
+                </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] sm:flex-col sm:items-end">
-                <span className={tone.type}>{cert.type}</span>
-                <span className="rounded-full border border-zinc-800 bg-zinc-900 px-2.5 py-0.5 text-zinc-400">
-                  {cert.scope}
-                </span>
+              <div className="space-y-2">
+                <h3 className="font-display text-xl font-semibold tracking-tight text-ink">{cert.title}</h3>
+                <p className="text-sm text-body">{cert.issuer}</p>
+                <p className="text-sm leading-relaxed text-muted">{cert.detail}</p>
               </div>
             </li>
           )

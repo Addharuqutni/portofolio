@@ -5,19 +5,20 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-zinc-900">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 font-mono text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+    <footer className="border-t border-glass-line bg-glass backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div className="space-y-1">
-          <p>
+          <p className="text-body">
             © {year} {profile.name}
           </p>
-          <p className="text-zinc-600">Banyumas, Jawa Tengah</p>
+          <p>Banyumas, Jawa Tengah</p>
         </div>
         <a
           href="#hero"
-          className="inline-flex min-h-11 items-center gap-2 self-start rounded-lg px-1 text-zinc-400 transition-colors hover:text-zinc-100 sm:self-auto"
+          className="group inline-flex min-h-11 items-center gap-2 self-start rounded-xl border border-glass-line bg-glass px-4 text-body transition-colors hover:border-glass-strong hover:text-ink sm:self-auto"
         >
-          Kembali ke atas <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
+          Kembali ke atas
+          <ArrowUp className="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-y-0.5" aria-hidden="true" />
         </a>
       </div>
     </footer>

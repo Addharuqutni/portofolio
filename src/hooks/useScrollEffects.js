@@ -40,30 +40,71 @@ export function useActiveSection(ids) {
   return active
 }
 
-/** Memudarkan elemen `[data-reveal]` saat masuk viewport; dilewati bila reduced-motion. */
+/**
+ * Memunculkan elemen `[data-reveal]` saat masuk viewport, dengan delay bertingkat antar saudara.
+ * Reduced-motion ditangani di CSS (gerak dihapus, fade tetap). Setelah selesai, kelas reveal
+ * dilepas agar transisi hover milik elemen (Tailwind) kembali berlaku.
+ */
 export function useReveal() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
-
+    const timers = []
     const elements = [...document.querySelectorAll('[data-reveal]')]
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue
-          entry.target.classList.add('is-revealed')
-          observer.unobserve(entry.target)
+          const el = entry.target
+          el.classList.add('is-revealed')
+          observer.unobserve(el)
+          // ponytail: durasi terpanjang (garis judul / stagger chip) di-hardcode; naikkan jika CSS reveal diperlambat.
+          const delay = parseInt(el.style.getPropertyValue('--reveal-delay'), 10) || 0
+          timers.push(
+            setTimeout(() => {
+              el.classList.remove('reveal-pending', 'is-revealed')
+              el.style.removeProperty('--reveal-delay')
+            }, delay + 1600),
+          )
         }
       },
-      { rootMargin: '0px 0px -10% 0px' },
+      { rootMargin: '0px 0px -8% 0px' },
     )
 
     elements.forEach((el) => {
-      // Elemen yang sudah terlihat saat load tidak dianimasikan.
+      // Elemen yang sudah terlihat saat load tidak dianimasikan (hero punya entrance sendiri).
       if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return
+      const siblings = [...el.parentElement.children].filter((child) => child.hasAttribute('data-reveal'))
+      el.style.setProperty('--reveal-delay', `${Math.min(siblings.indexOf(el), 5) * 120}ms`)
       el.classList.add('reveal-pending')
       observer.observe(el)
     })
 
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      timers.forEach(clearTimeout)
+    }
+  }, [])
+}
+
+/**
+ * Mengisi --x/--y pada `[data-spotlight]` yang sedang di-hover (cahaya ikut kursor),
+ * plus --rx/--ry untuk tilt 3D pada elemen yang juga bertanda `[data-tilt]`.
+ */
+export function useSpotlight() {
+  useEffect(() => {
+    const onMove = (event) => {
+      const card = event.target.closest?.('[data-spotlight]')
+      if (!card) return
+      const rect = card.getBoundingClientRect()
+      card.style.setProperty('--x', `${event.clientX - rect.left}px`)
+      card.style.setProperty('--y', `${event.clientY - rect.top}px`)
+      if (!card.hasAttribute('data-tilt')) return
+      // Maks. 4 derajat ke tiap arah; cukup terasa tanpa membuat teks sulit dibaca.
+      const px = (event.clientX - rect.left) / rect.width - 0.5
+      const py = (event.clientY - rect.top) / rect.height - 0.5
+      card.style.setProperty('--rx', `${(px * 8).toFixed(2)}deg`)
+      card.style.setProperty('--ry', `${(-py * 8).toFixed(2)}deg`)
+    }
+    document.addEventListener('pointermove', onMove, { passive: true })
+    return () => document.removeEventListener('pointermove', onMove)
   }, [])
 }
