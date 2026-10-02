@@ -31,7 +31,7 @@ export const navLinks = [
 ]
 
 /**
- * Ikon teknologi: `devicon` memakai kelas resmi Devicon (CSS dari CDN),
+ * Ikon teknologi: `devicon` memakai SVG Devicon self-host di /public/icons,
  * `lucide` memakai nama ikon lucide-react.
  */
 export const skillGroups = [
@@ -39,29 +39,29 @@ export const skillGroups = [
     title: 'Frontend Engineering',
     meta: 'Client Side',
     skills: [
-      { label: 'Next.js', icon: { type: 'devicon', className: 'devicon-nextjs-plain text-sm text-white' } },
-      { label: 'React', icon: { type: 'devicon', className: 'devicon-react-original colored text-sm' } },
-      { label: 'TypeScript', icon: { type: 'devicon', className: 'devicon-typescript-plain colored text-sm' } },
-      { label: 'Tailwind CSS', icon: { type: 'devicon', className: 'devicon-tailwindcss-original colored text-sm' } },
-      { label: 'JavaScript', icon: { type: 'devicon', className: 'devicon-javascript-plain colored text-sm' } },
+      { label: 'Next.js', icon: { type: 'devicon', name: 'nextjs-plain', invert: true } },
+      { label: 'React', icon: { type: 'devicon', name: 'react-original' } },
+      { label: 'TypeScript', icon: { type: 'devicon', name: 'typescript-plain' } },
+      { label: 'Tailwind CSS', icon: { type: 'devicon', name: 'tailwindcss-original' } },
+      { label: 'JavaScript', icon: { type: 'devicon', name: 'javascript-plain' } },
     ],
   },
   {
     title: 'Backend & Networking',
     meta: 'APIs & Services',
     skills: [
-      { label: 'Node.js', icon: { type: 'devicon', className: 'devicon-nodejs-plain colored text-sm' } },
+      { label: 'Node.js', icon: { type: 'devicon', name: 'nodejs-plain' } },
       { label: 'WebSocket', icon: { type: 'lucide', name: 'Radio', className: 'w-3.5 h-3.5 text-emerald-400' } },
       { label: 'REST API', icon: { type: 'lucide', name: 'Network', className: 'w-3.5 h-3.5 text-sky-400' } },
-      { label: 'Laravel', icon: { type: 'devicon', className: 'devicon-laravel-original colored text-sm' } },
+      { label: 'Laravel', icon: { type: 'devicon', name: 'laravel-original' } },
     ],
   },
   {
     title: 'Basis Data & ORM',
     meta: 'Persistence',
     skills: [
-      { label: 'PostgreSQL', icon: { type: 'devicon', className: 'devicon-postgresql-plain colored text-sm' } },
-      { label: 'MySQL', icon: { type: 'devicon', className: 'devicon-mysql-plain colored text-sm' } },
+      { label: 'PostgreSQL', icon: { type: 'devicon', name: 'postgresql-plain' } },
+      { label: 'MySQL', icon: { type: 'devicon', name: 'mysql-original' } },
       { label: 'Drizzle ORM', icon: { type: 'lucide', name: 'Database', className: 'w-3.5 h-3.5 text-amber-400' } },
     ],
   },
@@ -69,11 +69,11 @@ export const skillGroups = [
     title: 'Tools & Lainnya',
     meta: 'Workflow & Design',
     skills: [
-      { label: 'Docker', icon: { type: 'devicon', className: 'devicon-docker-plain colored text-sm' } },
-      { label: 'Git', icon: { type: 'devicon', className: 'devicon-git-plain colored text-sm' } },
-      { label: 'Figma', icon: { type: 'devicon', className: 'devicon-figma-plain colored text-sm' } },
-      { label: 'Python', icon: { type: 'devicon', className: 'devicon-python-plain colored text-sm' } },
-      { label: 'Java', icon: { type: 'devicon', className: 'devicon-java-plain colored text-sm' } },
+      { label: 'Docker', icon: { type: 'devicon', name: 'docker-plain' } },
+      { label: 'Git', icon: { type: 'devicon', name: 'git-plain' } },
+      { label: 'Figma', icon: { type: 'devicon', name: 'figma-original' } },
+      { label: 'Python', icon: { type: 'devicon', name: 'python-plain' } },
+      { label: 'Java', icon: { type: 'devicon', name: 'java-plain' } },
     ],
   },
 ]

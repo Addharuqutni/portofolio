@@ -9,14 +9,24 @@ const LUCIDE_ICONS = {
 
 /**
  * Merender ikon teknologi dari dua sumber:
- * - `devicon` → kelas CSS Devicon (dimuat dari CDN di index.html)
+ * - `devicon` → SVG Devicon self-host di /public/icons (`invert` untuk logo hitam di latar gelap)
  * - `lucide`  → komponen lucide-react
  */
 export default function TechIcon({ icon }) {
   if (!icon) return null
 
   if (icon.type === 'devicon') {
-    return <i className={icon.className} aria-hidden="true" />
+    return (
+      <img
+        src={`/icons/${icon.name}.svg`}
+        alt=""
+        width="14"
+        height="14"
+        loading="lazy"
+        decoding="async"
+        className={`h-3.5 w-3.5 ${icon.invert ? 'invert' : ''}`}
+      />
+    )
   }
 
   if (icon.type === 'lucide') {

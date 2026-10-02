@@ -94,16 +94,22 @@ button:not(:disabled),
   mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, #000 35%, transparent 80%);
 }
 
-/* Panel kaca: dipakai sebagai utility agar bisa dikombinasikan dengan varian hover:. */
+/* Panel kaca: dipakai sebagai utility agar bisa dikombinasikan dengan varian hover:.
+   Sengaja tanpa backdrop-filter: yang ada di belakang kartu hanya gradient ambient yang sudah lembut,
+   jadi blur nyaris tak terlihat bedanya tapi memaksa GPU menghitung ulang tiap frame scroll.
+   Blur asli (glass-blur) hanya untuk elemen yang melayang di atas konten: header & toast. */
 @utility glass {
   border-width: 1px;
   border-color: var(--color-glass-line);
   background-color: var(--color-glass);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  backdrop-filter: blur(18px) saturate(150%);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.07),
     0 24px 48px -28px rgb(0 0 0 / 0.7);
+}
+
+@utility glass-blur {
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
 }
 
 /* Latar ambient: orb cahaya yang melayang, memberi warna untuk dibiaskan panel kaca.
@@ -121,6 +127,7 @@ button:not(:disabled),
   height: 60vmax;
   border-radius: 9999px;
   will-change: transform;
+  contain: strict;
 }
 .ambient > span:nth-child(1) {
   top: -25vmax;
@@ -163,17 +170,14 @@ button:not(:disabled),
 .reveal-pending {
   opacity: 0;
   transform: translateY(40px) scale(0.97);
-  filter: blur(8px);
   transition:
     opacity 700ms var(--ease-out-expo),
-    transform 1000ms var(--ease-out-expo),
-    filter 700ms var(--ease-out-expo);
+    transform 1000ms var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal-pending.is-revealed {
   opacity: 1;
   transform: none;
-  filter: none;
 }
 
 /* Anak di dalam [data-stagger] (mis. chip skill) muncul satu per satu setelah induknya; --i per item. */
@@ -209,7 +213,6 @@ button:not(:disabled),
   from {
     opacity: 0;
     transform: translateY(28px);
-    filter: blur(6px);
   }
 }
 @keyframes rise {
@@ -245,22 +248,11 @@ button:not(:disabled),
   animation: draw-under 1000ms var(--ease-out-expo) 1100ms both;
 }
 
-/* Cahaya hero bergeser pelan agar latar terasa hidup. */
-@keyframes drift {
-  50% {
-    background-position:
-      -160px 80px,
-      0 0,
-      0 0;
-  }
-}
-.bg-hero-grid {
-  animation: drift 10s ease-in-out infinite;
-}
-
 /* Spotlight mengikuti kursor di kartu; posisi --x/--y diisi useSpotlight. */
 [data-spotlight] {
   isolation: isolate;
+  /* Potong kilau sapuan yang digeser keluar kartu. */
+  overflow: clip;
 }
 [data-spotlight]::before {
   content: '';
@@ -284,14 +276,14 @@ button:not(:disabled),
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.07) 50%, transparent 60%) no-repeat;
-  background-size: 250% 100%;
-  background-position: 150% 0;
-  transition: background-position 0s;
+  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.07) 50%, transparent 60%);
+  transform: translateX(-100%);
+  opacity: 0;
 }
 [data-spotlight]:hover::after {
-  background-position: -50% 0;
-  transition: background-position 1100ms var(--ease-out-expo);
+  opacity: 1;
+  transform: translateX(100%);
+  transition: transform 1100ms var(--ease-out-expo);
 }
 
 /* Tilt 3D mengikuti kursor (--rx/--ry dari useSpotlight). Hanya perangkat dengan hover,
@@ -320,18 +312,14 @@ button:not(:disabled),
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%) no-repeat;
-  background-size: 250% 100%;
-  background-position: 150% 0;
+  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%);
+  transform: translateX(-100%);
   animation: shine 4.5s ease-in-out 2s infinite;
 }
 @keyframes shine {
-  0% {
-    background-position: 150% 0;
-  }
   30%,
   100% {
-    background-position: -50% 0;
+    transform: translateX(100%);
   }
 }
 
@@ -382,7 +370,6 @@ button:not(:disabled),
   .animate-slide-down {
     animation-name: fade;
   }
-  .bg-hero-grid,
   .hero-parallax,
   .ambient > span,
   .btn-shine::after {
@@ -395,6 +382,5 @@ button:not(:disabled),
   .reveal-pending [data-stagger] > *,
   .reveal-pending [data-line] {
     transform: none;
-    filter: none;
   }
 }

@@ -27,7 +27,7 @@ export default function Hero() {
         <div
           className="animate-enter flex flex-wrap items-center gap-x-5 gap-y-3 font-mono text-xs uppercase tracking-wider"
         >
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent-soft px-3.5 py-1.5 text-accent backdrop-blur-md">
+          <span className="inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent-soft px-3.5 py-1.5 text-accent">
             <span className="relative flex h-2 w-2" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
