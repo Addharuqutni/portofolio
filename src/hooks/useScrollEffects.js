@@ -91,7 +91,12 @@ export function useReveal() {
  */
 export function useSpotlight() {
   useEffect(() => {
-    const onMove = (event) => {
+    let frame = 0
+    let last = null
+
+    const update = () => {
+      frame = 0
+      const event = last
       const card = event.target.closest?.('[data-spotlight]')
       if (!card) return
       const rect = card.getBoundingClientRect()
@@ -104,7 +109,15 @@ export function useSpotlight() {
       card.style.setProperty('--rx', `${(px * 8).toFixed(2)}deg`)
       card.style.setProperty('--ry', `${(-py * 8).toFixed(2)}deg`)
     }
+    const onMove = (event) => {
+      last = event
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+
     document.addEventListener('pointermove', onMove, { passive: true })
-    return () => document.removeEventListener('pointermove', onMove)
+    return () => {
+      cancelAnimationFrame(frame)
+      document.removeEventListener('pointermove', onMove)
+    }
   }, [])
 }

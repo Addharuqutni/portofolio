@@ -33,7 +33,7 @@ export default function Header() {
       <header className="animate-slide-down sticky top-0 z-40 px-3 pt-3 sm:px-6">
         <div
           className={`mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 rounded-2xl pl-4 pr-1.5 transition-[background-color,border-color,box-shadow] duration-300 sm:pl-5 ${
-            scrolled ? 'glass bg-canvas/40' : 'border border-transparent'
+            scrolled ? 'glass glass-blur bg-canvas/50' : 'border border-transparent'
           }`}
         >
           <a href="#hero" className="group flex min-h-11 shrink-0 items-center gap-2.5">

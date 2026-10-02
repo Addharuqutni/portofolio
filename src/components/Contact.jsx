@@ -35,7 +35,7 @@ export default function Contact() {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-accent/15 blur-3xl"
+          className="pointer-events-none absolute -left-24 -top-24 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgb(184_243_92/0.14),transparent_65%)]"
         />
 
         <div className="relative space-y-4">
