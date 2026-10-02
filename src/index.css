@@ -1,22 +1,39 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk', 'Archivo', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-  --color-surface: #09090b;
-  --color-body: #d4d4d8;
+  /* Palet: tinta gelap dingin + satu aksen lime. */
+  --color-canvas: #0a0c10;
+  --color-sunken: #0d1015;
+  --color-raised: #12151b;
+  --color-line: #1e232c;
+  --color-line-strong: #2d3440;
+  --color-ink: #f1f3f6;
+  --color-body: #c5cbd4;
+  --color-muted: #8d96a5;
+  --color-accent: #b8f35c;
+  --color-accent-soft: rgb(184 243 92 / 0.1);
+  --color-info: #7cc4ff;
+
+  /* Kaca: putih tipis di atas latar gelap; opacity rendah agar teks muted tetap >= 4.5:1. */
+  --color-glass: rgb(255 255 255 / 0.045);
+  --color-glass-hover: rgb(255 255 255 / 0.07);
+  --color-glass-line: rgb(255 255 255 / 0.09);
+  --color-glass-strong: rgb(255 255 255 / 0.18);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 6rem;
 }
 
 body {
-  background-color: var(--color-surface);
+  background-color: var(--color-canvas);
   color: var(--color-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,7 +48,7 @@ button:not(:disabled),
 
 /* Fokus keyboard yang terlihat untuk semua elemen interaktif. */
 :focus-visible {
-  outline: 2px solid #e4e4e7;
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 0.5rem;
 }
@@ -42,19 +59,19 @@ button:not(:disabled),
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: var(--color-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--color-line-strong);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: var(--color-muted);
 }
 
 ::selection {
-  background: #f4f4f5;
-  color: #09090b;
+  background: var(--color-accent);
+  color: var(--color-canvas);
 }
 
 .no-scrollbar {
@@ -64,34 +81,320 @@ button:not(:disabled),
   display: none;
 }
 
-/* Grid titik halus di belakang hero, memudar ke bawah. */
-.bg-dot-grid {
-  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(ellipse 70% 60% at 30% 30%, #000 30%, transparent 75%);
+/* Grid garis halus + cahaya aksen di belakang hero, memudar ke bawah. */
+.bg-hero-grid {
+  background-image:
+    radial-gradient(ellipse 50% 40% at 85% 10%, rgb(184 243 92 / 0.08), transparent 70%),
+    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    48px 48px,
+    48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, #000 35%, transparent 80%);
 }
 
-/* Scroll reveal: hanya aktif setelah JS menandai elemen, jadi konten tak pernah tersembunyi tanpa JS. */
+/* Panel kaca: dipakai sebagai utility agar bisa dikombinasikan dengan varian hover:. */
+@utility glass {
+  border-width: 1px;
+  border-color: var(--color-glass-line);
+  background-color: var(--color-glass);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 24px 48px -28px rgb(0 0 0 / 0.7);
+}
+
+/* Latar ambient: orb cahaya yang melayang, memberi warna untuk dibiaskan panel kaca.
+   Gradient radial (bukan filter blur) agar murah dirender; hanya transform yang dianimasikan. */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient > span {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 9999px;
+  will-change: transform;
+}
+.ambient > span:nth-child(1) {
+  top: -25vmax;
+  right: -15vmax;
+  background: radial-gradient(circle, rgb(184 243 92 / 0.16), transparent 62%);
+  animation: orb-a 22s ease-in-out infinite alternate;
+}
+.ambient > span:nth-child(2) {
+  bottom: -30vmax;
+  left: -20vmax;
+  background: radial-gradient(circle, rgb(124 196 255 / 0.14), transparent 62%);
+  animation: orb-b 28s ease-in-out infinite alternate;
+}
+.ambient > span:nth-child(3) {
+  top: 30%;
+  left: 35%;
+  width: 45vmax;
+  height: 45vmax;
+  background: radial-gradient(circle, rgb(167 139 250 / 0.1), transparent 62%);
+  animation: orb-c 34s ease-in-out infinite alternate;
+}
+@keyframes orb-a {
+  to {
+    transform: translate(-30vw, 35vh) scale(1.15);
+  }
+}
+@keyframes orb-b {
+  to {
+    transform: translate(35vw, -30vh) scale(0.9);
+  }
+}
+@keyframes orb-c {
+  to {
+    transform: translate(-25vw, -20vh) scale(1.2);
+  }
+}
+
+/* Scroll reveal: hanya aktif setelah JS menandai elemen, jadi konten tak pernah tersembunyi tanpa JS.
+   --reveal-delay di-set per elemen agar kartu sejajar muncul berurutan. */
 .reveal-pending {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(40px) scale(0.97);
+  filter: blur(8px);
   transition:
-    opacity 400ms var(--ease-out-expo),
-    transform 400ms var(--ease-out-expo);
+    opacity 700ms var(--ease-out-expo),
+    transform 1000ms var(--ease-out-expo),
+    filter 700ms var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal-pending.is-revealed {
   opacity: 1;
   transform: none;
+  filter: none;
 }
 
+/* Anak di dalam [data-stagger] (mis. chip skill) muncul satu per satu setelah induknya; --i per item. */
+.reveal-pending [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  transition:
+    opacity 400ms var(--ease-out-expo),
+    transform 600ms var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 300ms + var(--i, 0) * 50ms);
+}
+.reveal-pending.is-revealed [data-stagger] > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Garis judul seksi tergambar dari kiri saat muncul. */
+.reveal-pending [data-line] {
+  transform: scaleX(0);
+  transition: transform 1200ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 150ms);
+}
+.reveal-pending.is-revealed [data-line] {
+  transform: none;
+}
+
+/* Entrance saat halaman dimuat (hero & header). Delay lewat --enter-delay. */
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(110%) rotate(4deg);
+  }
+}
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+@keyframes draw-under {
+  from {
+    background-size: 0 2px;
+  }
+}
+.animate-enter {
+  animation: enter-up 900ms var(--ease-out-expo) var(--enter-delay, 0ms) both;
+}
+.animate-rise {
+  transform-origin: left bottom;
+  animation: rise 1100ms var(--ease-out-expo) var(--enter-delay, 0ms) both;
+}
+.animate-slide-down {
+  animation: slide-down 700ms var(--ease-out-expo) 100ms both;
+}
+/* Garis bawah aksen yang tergambar; background agar bisa dianimasikan lintas baris. */
+.underline-draw {
+  padding-bottom: 0.15em;
+  background: linear-gradient(var(--color-accent), var(--color-accent)) no-repeat 0 100% / 100% 2px;
+  animation: draw-under 1000ms var(--ease-out-expo) 1100ms both;
+}
+
+/* Cahaya hero bergeser pelan agar latar terasa hidup. */
+@keyframes drift {
+  50% {
+    background-position:
+      -160px 80px,
+      0 0,
+      0 0;
+  }
+}
+.bg-hero-grid {
+  animation: drift 10s ease-in-out infinite;
+}
+
+/* Spotlight mengikuti kursor di kartu; posisi --x/--y diisi useSpotlight. */
+[data-spotlight] {
+  isolation: isolate;
+}
+[data-spotlight]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), rgb(184 243 92 / 0.09), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+[data-spotlight]:hover::before {
+  opacity: 1;
+}
+/* Kilau kaca: pita cahaya diagonal yang menyapu panel saat hover. */
+[data-spotlight]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.07) 50%, transparent 60%) no-repeat;
+  background-size: 250% 100%;
+  background-position: 150% 0;
+  transition: background-position 0s;
+}
+[data-spotlight]:hover::after {
+  background-position: -50% 0;
+  transition: background-position 1100ms var(--ease-out-expo);
+}
+
+/* Tilt 3D mengikuti kursor (--rx/--ry dari useSpotlight). Hanya perangkat dengan hover,
+   dan tidak selama reveal berjalan agar transform tidak bentrok. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-tilt]:not(.reveal-pending) {
+    transition:
+      transform 600ms var(--ease-out-expo),
+      translate 200ms ease,
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+  [data-tilt]:not(.reveal-pending):hover {
+    transform: perspective(1000px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
+  }
+}
+
+/* CTA utama: kilau berkala supaya mata tertuju ke aksi utama. */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%) no-repeat;
+  background-size: 250% 100%;
+  background-position: 150% 0;
+  animation: shine 4.5s ease-in-out 2s infinite;
+}
+@keyframes shine {
+  0% {
+    background-position: 150% 0;
+  }
+  30%,
+  100% {
+    background-position: -50% 0;
+  }
+}
+
+/* Scroll-driven (native): progress bar baca + hero memudar & naik saat discroll lewat.
+   Browser tanpa dukungan cukup tampil statis. */
+.scroll-progress {
+  display: none;
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes hero-out {
+  to {
+    opacity: 0.1;
+    transform: translateY(-120px) scale(0.96);
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    transform-origin: left;
+    animation: grow-x linear both;
+    animation-timeline: scroll(root);
+  }
+  #hero {
+    view-timeline: --hero;
+  }
+  .hero-parallax {
+    animation: hero-out linear both;
+    animation-timeline: --hero;
+    animation-range: exit 0% exit 90%;
+  }
+}
+
+/* Reduced motion: hilangkan gerak/geser (pemicu gangguan vestibular), tetap pertahankan
+   fade & transisi warna supaya antarmuka tetap terasa responsif. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  .animate-enter,
+  .animate-rise,
+  .animate-slide-down {
+    animation-name: fade;
+  }
+  .bg-hero-grid,
+  .hero-parallax,
+  .ambient > span,
+  .btn-shine::after {
+    animation: none;
+  }
+  [data-spotlight]:hover::after {
+    transition: none;
+  }
+  .reveal-pending,
+  .reveal-pending [data-stagger] > *,
+  .reveal-pending [data-line] {
+    transform: none;
+    filter: none;
   }
 }
