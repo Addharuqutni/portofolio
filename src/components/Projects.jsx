@@ -1,8 +1,113 @@
-import { projects } from '../data/portfolio.js'
+import { ArrowRight, Pause, Play } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { projects, routes } from '../data/portfolio.js'
+import ProjectCard from './ProjectCard.jsx'
 import SectionHeading from './SectionHeading.jsx'
 
-/** Seksi 04 — Proyek pilihan. */
+// Proyek unggulan di depan, sisanya mengikuti urutan data (sort stabil).
+const slides = [...projects].sort((a, b) => Number(b.featured) - Number(a.featured))
+
+/** Kecepatan aliran dalam piksel per detik. */
+const SPEED = 40
+/** Setelah pengguna menggeser manual, aliran menunggu selama ini sebelum lanjut. */
+const IDLE_MS = 2500
+
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/**
+ * Seksi 04 — Proyek dalam carousel yang mengalir terus (marquee), tanpa berhenti per slide.
+ *
+ * Daftar dirender dua kali; saat posisi melewati satu putaran, posisi dikurangi satu putaran
+ * sehingga aliran terlihat tak berujung. Memakai scroll container sungguhan (bukan transform)
+ * agar pengguna tetap bisa menggeser manual dan fokus keyboard selalu digulir ke dalam pandangan.
+ *
+ * Aliran tertahan saat kursor di atas carousel, saat fokus keyboard di dalamnya, saat carousel
+ * di luar layar atau tab tersembunyi, dan sesaat setelah pengguna menggeser. Tombol jeda/putar
+ * wajib ada (WCAG 2.2.2). Bila reduced motion aktif, aliran mati secara default.
+ */
 export default function Projects() {
+  const rootRef = useRef(null)
+  const trackRef = useRef(null)
+  const [playing, setPlaying] = useState(() => !prefersReducedMotion())
+
+  useEffect(() => {
+    const root = rootRef.current
+    const track = trackRef.current
+    const hold = { hover: false, focus: false, offscreen: false, lastInput: 0 }
+    let loop = 0
+    let pos = track.scrollLeft
+    let last = 0
+    let frame = 0
+
+    // Lebar satu putaran = jarak dari item pertama ke salinan pertamanya.
+    const measure = () => {
+      const copy = track.children[slides.length]
+      loop = copy ? copy.offsetLeft - track.firstElementChild.offsetLeft : 0
+    }
+
+    const tick = (now) => {
+      frame = requestAnimationFrame(tick)
+      const dt = Math.min(now - (last || now), 50)
+      last = now
+      if (!loop) return
+
+      // Pengguna menggeser manual: ikuti posisinya, dan bungkus ke awal/akhir agar tak berujung.
+      if (Math.abs(track.scrollLeft - pos) > 2) pos = track.scrollLeft
+      if (pos < 1) pos += loop
+
+      const held =
+        !playing || hold.hover || hold.focus || hold.offscreen || document.hidden || now - hold.lastInput < IDLE_MS
+      if (!held) pos += (SPEED * dt) / 1000
+      if (pos >= loop) pos -= loop
+
+      if (Math.abs(track.scrollLeft - pos) >= 0.5) track.scrollLeft = pos
+    }
+
+    const markInput = () => {
+      hold.lastInput = performance.now()
+    }
+    const onEnter = (event) => {
+      if (event.pointerType === 'mouse') hold.hover = true
+    }
+    const onLeave = () => {
+      hold.hover = false
+    }
+    // Hanya fokus keyboard yang menahan; fokus sisa klik mouse tidak.
+    const onFocusIn = (event) => {
+      hold.focus = event.target.matches(':focus-visible')
+    }
+    const onFocusOut = (event) => {
+      if (!root.contains(event.relatedTarget)) hold.focus = false
+    }
+
+    const resizeObserver = new ResizeObserver(measure)
+    const viewObserver = new IntersectionObserver(([entry]) => {
+      hold.offscreen = !entry.isIntersecting
+    })
+    const inputs = ['pointerdown', 'wheel', 'touchstart', 'keydown']
+
+    measure()
+    resizeObserver.observe(track)
+    viewObserver.observe(root)
+    root.addEventListener('pointerenter', onEnter)
+    root.addEventListener('pointerleave', onLeave)
+    root.addEventListener('focusin', onFocusIn)
+    root.addEventListener('focusout', onFocusOut)
+    inputs.forEach((type) => track.addEventListener(type, markInput, { passive: true }))
+    frame = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      resizeObserver.disconnect()
+      viewObserver.disconnect()
+      root.removeEventListener('pointerenter', onEnter)
+      root.removeEventListener('pointerleave', onLeave)
+      root.removeEventListener('focusin', onFocusIn)
+      root.removeEventListener('focusout', onFocusOut)
+      inputs.forEach((type) => track.removeEventListener(type, markInput))
+    }
+  }, [playing])
+
   return (
     <section id="proyek" aria-labelledby="proyek-title" className="space-y-10">
       <SectionHeading
@@ -12,46 +117,61 @@ export default function Projects() {
         subtitle="Sistem nyata yang telah dirancang, diuji, dan diimplementasikan."
       />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {projects.map((project, i) => (
-          <article
-            key={project.title}
-            data-reveal
-            data-spotlight
-            data-tilt
-            className="glass group relative flex flex-col gap-6 rounded-2xl p-6 transition-[border-color,background-color,translate] duration-200 hover:-translate-y-1 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
-          >
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-6 top-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100"
-            />
-
-            <div className="flex items-start justify-between gap-3">
-              <span aria-hidden="true" className="font-display text-4xl font-bold leading-none tracking-tighter text-line-strong transition-colors duration-200 group-hover:text-accent">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span className="rounded-full border border-glass-strong px-3 py-1 font-mono text-[11px] text-body">
-                {project.badge}
-              </span>
-            </div>
-
-            <div className="flex-1 space-y-3">
-              <div className="space-y-1.5">
-                <h3 className="font-display text-xl font-semibold tracking-tight text-ink">{project.title}</h3>
-                <p className="font-mono text-xs text-muted">{project.stack}</p>
+      <div ref={rootRef} data-reveal className="space-y-8">
+        <div
+          ref={trackRef}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Daftar proyek yang bergerak otomatis"
+          tabIndex={0}
+          className="no-scrollbar flex gap-4 overflow-x-auto py-4 [mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)]"
+        >
+          {[0, 1].map((copy) =>
+            slides.map((project, i) => (
+              <div
+                key={`${copy}-${project.title}`}
+                role={copy ? undefined : 'group'}
+                aria-roledescription={copy ? undefined : 'slide'}
+                aria-label={copy ? undefined : `${i + 1} dari ${slides.length}: ${project.title}`}
+                // Salinan kedua hanya untuk ilusi tak berujung: disembunyikan dari pembaca layar dan Tab.
+                aria-hidden={copy ? true : undefined}
+                inert={copy ? true : undefined}
+                className="flex w-[min(21rem,78vw)] shrink-0 *:w-full"
+              >
+                <ProjectCard project={project} index={i} reveal={false} compact />
               </div>
-              <p className="text-sm leading-relaxed text-body">{project.description}</p>
-            </div>
+            )),
+          )}
+        </div>
 
-            <ul data-stagger className="flex flex-wrap gap-1.5 font-mono text-[11px] text-muted">
-              {project.tags.map((tag, j) => (
-                <li key={tag} style={{ '--i': j }} className="rounded-md border border-glass-line bg-glass px-2.5 py-1">
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => setPlaying((value) => !value)}
+            aria-pressed={!playing}
+            className="inline-flex min-h-12 items-center gap-2.5 rounded-xl border border-glass-line bg-glass px-4 font-mono text-xs text-body transition-colors duration-150 hover:border-glass-strong hover:bg-glass-hover hover:text-ink"
+          >
+            {playing ? (
+              <Pause className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <Play className="h-4 w-4" aria-hidden="true" />
+            )}
+            {playing ? 'Jeda' : 'Putar'}
+            <span className="text-muted">· {slides.length} proyek</span>
+          </button>
+
+          <a
+            href={routes.projects}
+            data-magnetic
+            className="group inline-flex min-h-12 items-center gap-2 rounded-xl border border-glass-line bg-glass px-5 text-sm font-medium text-body transition-colors duration-150 hover:border-glass-strong hover:bg-glass-hover hover:text-ink"
+          >
+            Lihat semua proyek
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </a>
+        </div>
       </div>
     </section>
   )

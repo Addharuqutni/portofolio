@@ -1,11 +1,10 @@
-import { Fragment } from 'react'
 import { ArrowDown, Check, Copy, ExternalLink, MapPin, MessageSquare } from 'lucide-react'
 import { profile } from '../data/portfolio.js'
 import { useToastContext } from '../context/ToastContext.jsx'
 import { useClipboard } from '../hooks/useClipboard.js'
 
 const actionBase =
-  'inline-flex min-h-12 items-center gap-2 rounded-xl px-5 text-sm font-medium transition-[background-color,border-color,color,transform] duration-150 active:scale-[0.98]'
+  'inline-flex min-h-12 items-center gap-2 rounded-xl px-5 text-sm font-medium transition-[background-color,border-color,color,scale] duration-150 active:scale-[0.98]'
 const actionSecondary = `${actionBase} glass text-body hover:border-glass-strong hover:bg-glass-hover hover:text-ink`
 
 /** Seksi pembuka: status, nama, value proposition, dan aksi cepat. */
@@ -49,19 +48,10 @@ export default function Hero() {
           </p>
           <h1
             id="hero-title"
+            data-split
             className="max-w-5xl font-display text-[2.6rem] font-bold leading-[0.98] tracking-[-0.035em] text-balance text-ink sm:text-6xl lg:text-[5.25rem]"
           >
-            {/* Tiap kata naik dari balik mask; spasi di luar span agar teks tetap terbaca utuh. */}
-            {profile.name.split(' ').map((word, i) => (
-              <Fragment key={i}>
-                {i > 0 && ' '}
-                <span className="inline-block overflow-hidden pb-[0.08em] align-bottom">
-                  <span className="animate-rise inline-block" style={{ '--enter-delay': `${200 + i * 90}ms` }}>
-                    {word}
-                  </span>
-                </span>
-              </Fragment>
-            ))}
+            {profile.name}
           </h1>
         </div>
 
@@ -80,7 +70,7 @@ export default function Hero() {
         </div>
 
         <div className="animate-enter flex flex-wrap items-center gap-3" style={{ '--enter-delay': '640ms' }}>
-          <a href="#proyek" className={`${actionBase} btn-shine bg-accent font-semibold text-canvas shadow-[0_8px_32px_-8px_rgb(184_243_92/0.5)] hover:bg-ink`}>
+          <a href="#proyek" data-magnetic className={`${actionBase} btn-shine bg-accent font-semibold text-canvas shadow-[0_8px_32px_-8px_rgb(184_243_92/0.5)] hover:bg-ink`}>
             <ArrowDown className="h-4 w-4" aria-hidden="true" /> Lihat Proyek
           </a>
           <a href={profile.whatsapp} target="_blank" rel="noopener noreferrer" className={actionSecondary}>

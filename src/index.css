@@ -25,6 +25,16 @@
   --color-glass-strong: rgb(255 255 255 / 0.18);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Lebar maksimum kontainer halaman. Ubah di sini saja: header, konten, dan footer
+     memakai utility `page-shell` sehingga selalu sejajar. 80rem = 1280px. */
+  --page-max: 80rem;
+}
+
+/* Kontainer halaman: dipakai oleh Header, main, dan Footer. */
+@utility page-shell {
+  margin-inline: auto;
+  max-width: var(--page-max);
 }
 
 html {
@@ -215,11 +225,6 @@ button:not(:disabled),
     transform: translateY(28px);
   }
 }
-@keyframes rise {
-  from {
-    transform: translateY(110%) rotate(4deg);
-  }
-}
 @keyframes slide-down {
   from {
     opacity: 0;
@@ -234,9 +239,10 @@ button:not(:disabled),
 .animate-enter {
   animation: enter-up 900ms var(--ease-out-expo) var(--enter-delay, 0ms) both;
 }
-.animate-rise {
-  transform-origin: left bottom;
-  animation: rise 1100ms var(--ease-out-expo) var(--enter-delay, 0ms) both;
+/* Mask kata dari SplitText (hero): ruang ekstra agar descender (g, j, y) tidak terpotong. */
+.split-word-mask {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
 }
 .animate-slide-down {
   animation: slide-down 700ms var(--ease-out-expo) 100ms both;
@@ -366,7 +372,6 @@ button:not(:disabled),
     scroll-behavior: auto;
   }
   .animate-enter,
-  .animate-rise,
   .animate-slide-down {
     animation-name: fade;
   }
