@@ -1,5 +1,5 @@
-import { ArrowRight, Pause, Play } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
+import { useEffect, useRef } from 'react'
 import { projects, routes } from '../data/portfolio.js'
 import ProjectCard from './ProjectCard.jsx'
 import SectionHeading from './SectionHeading.jsx'
@@ -12,8 +12,6 @@ const SPEED = 40
 /** Setelah pengguna menggeser manual, aliran menunggu selama ini sebelum lanjut. */
 const IDLE_MS = 2500
 
-const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
 /**
  * Seksi 04 — Proyek dalam carousel yang mengalir terus (marquee), tanpa berhenti per slide.
  *
@@ -22,18 +20,19 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
  * agar pengguna tetap bisa menggeser manual dan fokus keyboard selalu digulir ke dalam pandangan.
  *
  * Aliran tertahan saat kursor di atas carousel, saat fokus keyboard di dalamnya, saat carousel
- * di luar layar atau tab tersembunyi, dan sesaat setelah pengguna menggeser. Tombol jeda/putar
- * wajib ada (WCAG 2.2.2). Bila reduced motion aktif, aliran mati secara default.
+ * di luar layar atau tab tersembunyi, dan sesaat setelah pengguna menggeser. Bila reduced motion
+ * aktif, aliran tidak berjalan (kartu tetap bisa digeser manual).
  */
 export default function Projects() {
   const rootRef = useRef(null)
   const trackRef = useRef(null)
-  const [playing, setPlaying] = useState(() => !prefersReducedMotion())
 
   useEffect(() => {
     const root = rootRef.current
     const track = trackRef.current
     const hold = { hover: false, focus: false, offscreen: false, lastInput: 0 }
+    // Dibaca tiap frame, jadi perubahan setelan OS langsung berlaku tanpa reload.
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let loop = 0
     let pos = track.scrollLeft
     let last = 0
@@ -56,7 +55,7 @@ export default function Projects() {
       if (pos < 1) pos += loop
 
       const held =
-        !playing || hold.hover || hold.focus || hold.offscreen || document.hidden || now - hold.lastInput < IDLE_MS
+        reducedMotion.matches || hold.hover || hold.focus || hold.offscreen || document.hidden || now - hold.lastInput < IDLE_MS
       if (!held) pos += (SPEED * dt) / 1000
       if (pos >= loop) pos -= loop
 
@@ -106,7 +105,7 @@ export default function Projects() {
       root.removeEventListener('focusout', onFocusOut)
       inputs.forEach((type) => track.removeEventListener(type, markInput))
     }
-  }, [playing])
+  }, [])
 
   return (
     <section id="proyek" aria-labelledby="proyek-title" className="space-y-10">
@@ -136,7 +135,7 @@ export default function Projects() {
                 // Salinan kedua hanya untuk ilusi tak berujung: disembunyikan dari pembaca layar dan Tab.
                 aria-hidden={copy ? true : undefined}
                 inert={copy ? true : undefined}
-                className="flex w-[min(21rem,78vw)] shrink-0 *:w-full"
+                className="flex w-[86%] shrink-0 *:w-full sm:w-[calc((100%-1rem)/2)]"
               >
                 <ProjectCard project={project} index={i} reveal={false} compact />
               </div>
@@ -144,22 +143,7 @@ export default function Projects() {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => setPlaying((value) => !value)}
-            aria-pressed={!playing}
-            className="inline-flex min-h-12 items-center gap-2.5 rounded-xl border border-glass-line bg-glass px-4 font-mono text-xs text-body transition-colors duration-150 hover:border-glass-strong hover:bg-glass-hover hover:text-ink"
-          >
-            {playing ? (
-              <Pause className="h-4 w-4" aria-hidden="true" />
-            ) : (
-              <Play className="h-4 w-4" aria-hidden="true" />
-            )}
-            {playing ? 'Jeda' : 'Putar'}
-            <span className="text-muted">· {slides.length} proyek</span>
-          </button>
-
+        <div className="flex justify-center">
           <a
             href={routes.projects}
             data-magnetic

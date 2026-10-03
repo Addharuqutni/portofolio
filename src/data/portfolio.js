@@ -137,7 +137,7 @@ export const projects = [
     stack: 'Laravel • MySQL • JavaScript • REST API',
     badge: 'Monitoring',
     slug: 'platform-dashboard-iot',
-    cover: null,
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/iot-dashboard/main/docs/screenshots/dashboard.png',
     featured: true,
     repo: 'https://github.com/Addharuqutni/iot-dashboard',
     demo: null,
@@ -222,19 +222,6 @@ export const projects = [
     description:
       'Mengubah video panjang dari YouTube atau berkas lokal menjadi klip vertikal 9:16 dengan subtitle karaoke. AI memilih momen terbaik dari transkrip, wajah pembicara dijaga di tengah bingkai, dan seluruh proses berjalan lokal di Windows dengan dukungan berbagai penyedia AI (BYOK).',
     tags: ['Transkripsi Lokal', 'Pemilihan Momen AI', 'Auto-Reframe 9:16'],
-  },
-  {
-    title: 'Gudang Internal System',
-    stack: 'React • NestJS • Drizzle ORM • PostgreSQL',
-    badge: 'Operasional',
-    slug: 'gudang-internal',
-    cover: null,
-    featured: false,
-    repo: 'https://github.com/Addharuqutni/operasional-gudang',
-    demo: null,
-    description:
-      'Sistem operasional gudang berbasis peran (super admin, produksi, gudang, distribusi). Dilengkapi dokumentasi API OpenAPI/Swagger, tracing request-id, guard RBAC, rate limiting, serta skrip pentest dasar sebagai quality gate keamanan.',
-    tags: ['RBAC Multi-Peran', 'OpenAPI/Swagger', 'Security Pentest'],
   },
   {
     title: 'Job Scraper & Application Tracker',

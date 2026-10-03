@@ -15,7 +15,6 @@ Tidak ada kode yang perlu diubah: gambar terdeteksi otomatis berdasarkan nama fi
 | ERP Medium | `erp-medium.<ext>` |
 | POS-Web — Aplikasi Kasir | `pos-web.<ext>` |
 | ClipperAI | `clipper-ai.<ext>` |
-| Gudang Internal System | `gudang-internal.<ext>` |
 | Job Scraper & Application Tracker | `job-tracker.<ext>` |
 | Crypto AI Agent | `crypto-ai-agent.<ext>` |
 
