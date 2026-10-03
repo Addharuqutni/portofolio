@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-glass-line bg-glass">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div className="page-shell flex flex-col gap-4 px-5 py-10 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div className="space-y-1">
           <p className="text-body">
             © {year} {profile.name}
@@ -14,7 +14,7 @@ export default function Footer() {
           <p>Banyumas, Jawa Tengah</p>
         </div>
         <a
-          href="#hero"
+          href="#main"
           className="group inline-flex min-h-11 items-center gap-2 self-start rounded-xl border border-glass-line bg-glass px-4 text-body transition-colors hover:border-glass-strong hover:text-ink sm:self-auto"
         >
           Kembali ke atas

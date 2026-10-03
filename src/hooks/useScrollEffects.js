@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
  * sudah melewati garis 35% viewport. Tidak bergantung pada tinggi seksi,
  * jadi seksi pendek dan celah antar-seksi tetap terdeteksi.
  */
-export function useActiveSection(ids) {
+export function useActiveSection(ids, route) {
   const [active, setActive] = useState(null)
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export function useActiveSection(ids) {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [ids])
+  }, [ids, route])
 
   return active
 }
@@ -45,7 +45,7 @@ export function useActiveSection(ids) {
  * Reduced-motion ditangani di CSS (gerak dihapus, fade tetap). Setelah selesai, kelas reveal
  * dilepas agar transisi hover milik elemen (Tailwind) kembali berlaku.
  */
-export function useReveal() {
+export function useReveal(route) {
   useEffect(() => {
     const timers = []
     const elements = [...document.querySelectorAll('[data-reveal]')]
@@ -82,7 +82,7 @@ export function useReveal() {
       observer.disconnect()
       timers.forEach(clearTimeout)
     }
-  }, [])
+  }, [route])
 }
 
 /**

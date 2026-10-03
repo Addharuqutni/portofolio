@@ -21,6 +21,12 @@ export const profile = {
   github: 'https://github.com/Addharuqutni',
 }
 
+/** Route halaman. Dipakai Header, Projects, dan App. */
+export const routes = {
+  home: '/',
+  projects: '/proyek',
+}
+
 export const navLinks = [
   { label: 'Keahlian', href: '#keahlian' },
   { label: 'Pendidikan', href: '#pendidikan' },
@@ -101,11 +107,27 @@ export const experiences = [
   },
 ]
 
+/**
+ * Visual kartu proyek (lihat src/components/ProjectVisual.jsx):
+ * - `slug`  → nama file gambar di src/assets/covers/, mis. 'crypto-market-dashboard.webp'.
+ *             Cukup taruh filenya; tidak perlu mengubah baris ini.
+ * - `cover` → path eksplisit di /public atau URL eksternal. Menang atas `slug`.
+ *             Proyek dengan screenshot di README repo memakai URL raw.githubusercontent.com.
+ * Bila keduanya kosong atau gambarnya gagal dimuat, motif SVG bawaan yang dipakai.
+ *
+ * - `featured` → true = tampil di seksi Proyek beranda. Semua proyek tampil di /proyek.
+ * - `repo` / `demo` → tautan kode sumber dan situs live; null bila tidak ada.
+ */
 export const projects = [
   {
     title: 'Crypto Market Dashboard',
     stack: 'Next.js • TypeScript • Tailwind • Zustand',
     badge: 'Real-Time',
+    slug: 'crypto-market-dashboard',
+    cover: null,
+    featured: true,
+    repo: 'https://github.com/Addharuqutni/crypto-dashboard',
+    demo: null, // ponytail: URL Vercel 404 saat dicek 2026-10-03; isi lagi bila deploy hidup
     description:
       'Platform analitik pasar kripto dengan pembaruan latensi rendah. Mengintegrasikan streaming WebSocket Binance Futures untuk live order book depth dan candlestick interaktif. Dilengkapi watchlist, kalkulasi indikator teknikal otomatis, serta bot alert Telegram.',
     tags: ['WebSocket Streaming', 'Orderbook Depth', 'Telegram Bot'],
@@ -114,6 +136,11 @@ export const projects = [
     title: 'Platform Dashboard IoT',
     stack: 'Laravel • MySQL • JavaScript • REST API',
     badge: 'Monitoring',
+    slug: 'platform-dashboard-iot',
+    cover: null,
+    featured: true,
+    repo: 'https://github.com/Addharuqutni/iot-dashboard',
+    demo: null,
     description:
       'Sistem monitoring terpusat untuk mikrokontroler. Menyediakan endpoint REST API terenkripsi untuk mengumpulkan telemetri sensor secara kontinu, visualisasi grafik heartbeat status perangkat, serta sistem peringatan ambang batas otomatis.',
     tags: ['REST API Ingestion', 'Heartbeat Check', 'Automated Alert'],
@@ -122,6 +149,11 @@ export const projects = [
     title: 'Website Oleh-Oleh Khas Banyumas',
     stack: 'Laravel • MySQL • Leaflet.js • Bootstrap',
     badge: 'GIS & E-Commerce',
+    slug: 'website-oleh-oleh-banyumas',
+    cover: null,
+    featured: true,
+    repo: 'https://github.com/Addharuqutni/oleh2banyumas',
+    demo: null, // ponytail: domain tidak bisa di-resolve saat dicek 2026-10-03
     description:
       'Platform katalog UMKM dan e-commerce daerah yang mengintegrasikan pemetaan lokasi toko interaktif via Leaflet.js dan OpenStreetMap. Dikembangkan dengan metodologi Agile Scrum sprint dua mingguan.',
     tags: ['Leaflet.js Map', 'Store Locator', 'Agile Scrum'],
@@ -130,9 +162,105 @@ export const projects = [
     title: 'KIREA Reading Platform UI/UX',
     stack: 'Figma • Design Thinking • Prototyping',
     badge: 'Case Study',
+    slug: 'kirea-reading-platform',
+    cover: null,
+    featured: true,
+    repo: null,
+    demo: null,
     description:
       'Eksplorasi antarmuka untuk platform baca digital berbasis web. Menerapkan tahapan Design Thinking untuk memecahkan kenyamanan membaca pengguna di perangkat digital serta penyusunan design system komponen berulang.',
     tags: ['Design System', 'Information Architecture', 'Interactive Flow'],
+  },
+  {
+    title: 'SIMRS — Sistem Informasi Rumah Sakit',
+    stack: 'React 19 • TypeScript • Express • PostgreSQL',
+    badge: 'Healthcare',
+    slug: 'simrs',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/SIMRS_D/main/docs/screenshots/02-dashboard.png',
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/SIMRS_D',
+    demo: null,
+    description:
+      'Sistem informasi manajemen rumah sakit full-stack TypeScript: pendaftaran dan antrean, rawat jalan, IGD, rawat inap, rekam medis elektronik, laboratorium, radiologi, farmasi, hingga keuangan. Logika bisnis dipisah per modul domain, termasuk integrasi VClaim BPJS untuk penerbitan SEP dan klaim, serta penagihan yang dicatat tepat saat layanan diberikan.',
+    tags: ['Rekam Medis Elektronik', 'Integrasi VClaim BPJS', 'Stok Farmasi FEFO'],
+  },
+  {
+    title: 'ERP Medium',
+    stack: 'Laravel 13 • Inertia.js • Vue 3 • TypeScript',
+    badge: 'Enterprise',
+    slug: 'erp-medium',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/erp_medium/main/docs/screenshots/dashboard.png',
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/erp_medium',
+    demo: null,
+    description:
+      'ERP modular monolith untuk bisnis skala menengah: master data, inventori, pembelian, penjualan, akuntansi, HR & payroll, CRM, manufaktur, hingga BI. Modul diaktifkan bertahap sesuai kebutuhan, dengan RBAC granular, workflow approval, audit trail, serta dukungan multi-perusahaan, multi-cabang, dan multi-mata uang.',
+    tags: ['Modular Monolith', 'RBAC & Audit Trail', 'Multi-Company'],
+  },
+  {
+    title: 'POS-Web — Aplikasi Kasir',
+    stack: 'React 19 • Fastify • Drizzle ORM • PostgreSQL',
+    badge: 'Retail',
+    slug: 'pos-web',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/pos_small/main/docs/screenshots/cashier-pos.png',
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/pos_small',
+    demo: null,
+    description:
+      'Aplikasi kasir (Point-of-Sale) berbasis web untuk toko ritel dengan peran kasir, admin, dan owner. Mendukung pemindai barcode kamera, promo, pembayaran tunai/QRIS/transfer, buka-tutup shift dengan rekonsiliasi kas, struk termal, serta laporan penjualan dan laba yang dapat diekspor ke CSV dan PDF.',
+    tags: ['Barcode Scanner', 'Rekonsiliasi Shift', 'Laporan CSV/PDF'],
+  },
+  {
+    title: 'ClipperAI',
+    stack: 'Next.js • FastAPI • faster-whisper • MediaPipe',
+    badge: 'AI Video',
+    slug: 'clipper-ai',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/clipper/main/docs/assets/screenshots/dashboard.webp',
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/clipper',
+    demo: null,
+    description:
+      'Mengubah video panjang dari YouTube atau berkas lokal menjadi klip vertikal 9:16 dengan subtitle karaoke. AI memilih momen terbaik dari transkrip, wajah pembicara dijaga di tengah bingkai, dan seluruh proses berjalan lokal di Windows dengan dukungan berbagai penyedia AI (BYOK).',
+    tags: ['Transkripsi Lokal', 'Pemilihan Momen AI', 'Auto-Reframe 9:16'],
+  },
+  {
+    title: 'Gudang Internal System',
+    stack: 'React • NestJS • Drizzle ORM • PostgreSQL',
+    badge: 'Operasional',
+    slug: 'gudang-internal',
+    cover: null,
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/operasional-gudang',
+    demo: null,
+    description:
+      'Sistem operasional gudang berbasis peran (super admin, produksi, gudang, distribusi). Dilengkapi dokumentasi API OpenAPI/Swagger, tracing request-id, guard RBAC, rate limiting, serta skrip pentest dasar sebagai quality gate keamanan.',
+    tags: ['RBAC Multi-Peran', 'OpenAPI/Swagger', 'Security Pentest'],
+  },
+  {
+    title: 'Job Scraper & Application Tracker',
+    stack: 'React • Express • TypeScript • Puppeteer',
+    badge: 'Automation',
+    slug: 'job-tracker',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/jobs-tracker/main/docs/image/qa-dashboard-desktop.png',
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/jobs-tracker',
+    demo: null,
+    description:
+      'Otomatisasi pencarian lowongan dari lima portal (JobStreet, LinkedIn, Kalibrr, Glints, Dealls) ke satu dasbor, ditambah pelacak lamaran berbentuk Kanban. Scraper Cheerio dengan fallback Puppeteer, deduplikasi tiga lapis hingga fuzzy match, penjadwalan otomatis, dan analitik lamaran.',
+    tags: ['Multi-Source Scraper', 'Fuzzy Deduplication', 'Kanban Tracker'],
+  },
+  {
+    title: 'Crypto AI Agent',
+    stack: 'Python • ccxt • WebSocket • Telegram Bot',
+    badge: 'Trading Agent',
+    slug: 'crypto-ai-agent',
+    cover: null,
+    featured: false,
+    repo: 'https://github.com/Addharuqutni/crypto-ai-agent',
+    demo: null,
+    description:
+      'Agent Python yang memantau harga kripto dan menyusun analisis teknikal otomatis: EMA, RSI, MACD, ATR, ADX, Fibonacci, hingga struktur pasar seperti support/resistance dan liquidity sweep. Memindai pair bervolume tertinggi, mendeteksi sinyal, menyusun rencana risiko, dan mengirim alert Telegram.',
+    tags: ['Analisis Teknikal', 'Market Structure', 'Alert Telegram'],
   },
 ]
 
