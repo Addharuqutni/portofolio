@@ -31,7 +31,7 @@ export default function Contact() {
       <div
         data-reveal
         data-spotlight
-        className="relative grid grid-cols-1 gap-8 overflow-hidden glass rounded-3xl p-6 sm:p-10 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-12"
+        className="relative grid grid-cols-1 gap-8 overflow-hidden glass rounded-lg p-6 sm:p-10 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-12"
       >
         <div
           aria-hidden="true"

@@ -4,7 +4,7 @@ import { useToastContext } from '../context/ToastContext.jsx'
 import { useClipboard } from '../hooks/useClipboard.js'
 
 const actionBase =
-  'inline-flex min-h-12 items-center gap-2 rounded-xl px-5 text-sm font-medium transition-[background-color,border-color,color,scale] duration-150 active:scale-[0.98]'
+  'inline-flex min-h-12 items-center gap-2 rounded-[5px] px-5 text-sm font-medium transition-[background-color,border-color,color,scale] duration-150 active:scale-[0.98]'
 const actionSecondary = `${actionBase} glass text-body hover:border-glass-strong hover:bg-glass-hover hover:text-ink`
 
 /** Seksi pembuka: status, nama, value proposition, dan aksi cepat. */
@@ -19,36 +19,29 @@ export default function Hero() {
   }
 
   return (
-    <section id="hero" aria-labelledby="hero-title" className="relative pt-16 sm:pt-28">
+    <section id="hero" aria-labelledby="hero-title" className="relative pt-10 sm:pt-16">
       <div aria-hidden="true" className="bg-hero-grid pointer-events-none absolute -inset-x-24 -top-40 bottom-0 -z-10" />
 
       <div className="hero-parallax space-y-10">
-        <div
-          className="animate-enter flex flex-wrap items-center gap-x-5 gap-y-3 font-mono text-xs uppercase tracking-wider"
-        >
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent-soft px-3.5 py-1.5 text-accent">
-            <span className="relative flex h-2 w-2" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            {profile.availability}
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-muted">
-            <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-            {profile.location}
-          </span>
-        </div>
-
         <div className="space-y-6">
-          <p className="animate-enter font-mono text-sm text-muted" style={{ '--enter-delay': '120ms' }}>
-            <span className="text-accent" aria-hidden="true">
-              /{' '}
+          <div
+            className="animate-enter flex flex-wrap items-center justify-between gap-x-6 gap-y-3 font-mono"
+          >
+            <p className="text-sm" style={{ '--enter-delay': '120ms' }}>
+              <span className="text-accent" aria-hidden="true">
+                /{' '}
+              </span>
+              <span className="inline-block rounded-[3px] bg-accent/20 px-2 py-0.5 text-ink">
+                {profile.role}
+              </span>
+            </p>
+            <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted">
+              <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+              {profile.location}
             </span>
-            {profile.role}
-          </p>
+          </div>
           <h1
             id="hero-title"
-            data-split
             className="max-w-5xl font-display text-[2.6rem] font-bold leading-[0.98] tracking-[-0.035em] text-balance text-ink sm:text-6xl lg:text-[5.25rem]"
           >
             {profile.name}
@@ -56,17 +49,12 @@ export default function Hero() {
         </div>
 
         <div
-          className="animate-enter grid gap-6 border-t border-line pt-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16"
+          className="animate-enter border-t border-line pt-8"
           style={{ '--enter-delay': '520ms' }}
         >
-          <p className="text-xl leading-snug text-pretty text-body sm:text-2xl">
-            {profile.headline.lead}{' '}
-            <span className="underline-draw font-medium text-ink">
-              {profile.headline.highlight}
-            </span>
-            {profile.headline.tail}
+          <p className="max-w-2xl text-base leading-relaxed text-pretty text-body sm:text-lg">
+            {profile.summary}
           </p>
-          <p className="text-[15px] leading-relaxed text-pretty text-muted">{profile.summary}</p>
         </div>
 
         <div className="animate-enter flex flex-wrap items-center gap-3" style={{ '--enter-delay': '640ms' }}>

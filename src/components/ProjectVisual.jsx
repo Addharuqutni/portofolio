@@ -183,7 +183,7 @@ export default function ProjectVisual({ project, index, className = '' }) {
   // Bingkai memotong isi; isi diberi [data-parallax] agar digeser GSAP saat discroll.
   return (
     <div
-      className={`aspect-[16/10] w-full overflow-hidden rounded-xl border border-glass-line bg-[radial-gradient(ellipse_at_30%_0%,rgb(184_243_92/0.07),transparent_60%)] ${className}`}
+      className={`aspect-[16/10] w-full overflow-hidden rounded-lg border border-glass-line bg-[radial-gradient(ellipse_at_30%_0%,rgb(184_243_92/0.07),transparent_60%)] ${className}`}
     >
       {src && !failed ? (
         <img

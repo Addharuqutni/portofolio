@@ -20,7 +20,7 @@ export default function Skills() {
             data-reveal
             data-spotlight
             data-tilt
-            className="glass relative space-y-5 rounded-2xl p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
+            className="glass relative space-y-5 rounded-lg p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
           >
             <div className="space-y-1">
               <p className="font-mono text-[11px] uppercase tracking-widest text-muted">{group.meta}</p>

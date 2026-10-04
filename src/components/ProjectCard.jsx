@@ -69,7 +69,7 @@ export default function ProjectCard({ project, index, layout = 'stack', reveal =
       data-reveal={reveal || undefined}
       data-spotlight
       data-tilt
-      className={`glass group relative flex flex-col rounded-2xl transition-[border-color,background-color,translate] duration-200 hover:-translate-y-1 hover:border-glass-strong hover:bg-glass-hover ${
+      className={`glass group relative flex flex-col rounded-lg transition-[border-color,background-color,translate] duration-200 hover:-translate-y-1 hover:border-glass-strong hover:bg-glass-hover ${
         compact ? 'gap-5 p-5 sm:p-6' : 'gap-6 p-6 sm:p-7'
       } ${row ? 'md:flex-row md:items-center md:gap-8 lg:gap-10' : ''}`}
     >
