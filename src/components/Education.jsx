@@ -19,7 +19,7 @@ export default function Education() {
             data-reveal
             data-spotlight
             data-tilt
-            className="glass relative flex flex-col gap-6 overflow-hidden rounded-2xl p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
+            className="glass relative flex flex-col gap-6 overflow-hidden rounded-lg p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
           >
             <span
               aria-hidden="true"

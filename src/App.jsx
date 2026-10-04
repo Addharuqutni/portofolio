@@ -3,7 +3,6 @@ import { ToastProvider } from './context/ToastContext.jsx'
 import { useReveal, useSpotlight } from './hooks/useScrollEffects.js'
 import { useGsapEffects } from './hooks/useGsapEffects.js'
 import { routes } from './data/portfolio.js'
-import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import HomePage from './pages/HomePage.jsx'
 import ProjectsPage from './pages/ProjectsPage.jsx'
@@ -43,7 +42,13 @@ export default function App() {
         <span />
       </div>
 
-      <Header route={route} />
+      {/* Skip link tetap dipertahankan: tanpa nav, ini lompatan keyboard pertama ke konten. */}
+      <a
+        href="#main"
+        className="sr-only z-50 rounded-lg bg-accent px-4 py-2 font-mono text-xs font-medium text-canvas focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Lewati ke konten
+      </a>
 
       {route === 'proyek' ? <ProjectsPage /> : <HomePage />}
 

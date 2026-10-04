@@ -10,7 +10,7 @@ export default function ProjectsPage() {
   }, [])
 
   return (
-    <main id="main" className="page-shell space-y-12 overflow-x-clip px-5 pb-24 pt-14 sm:px-8 sm:pt-20">
+    <main id="main" className="page-shell space-y-12 overflow-x-clip px-5 pb-24 pt-10 sm:px-8 sm:pt-14">
       <header className="space-y-6">
         <a
           href={routes.home}

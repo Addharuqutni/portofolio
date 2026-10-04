@@ -5,15 +5,8 @@
 
 export const profile = {
   name: 'Addharuqutni Azzyumardi Nawasharif',
-  shortName: 'addharuqutni',
   role: 'Full Stack Developer',
   location: 'Banyumas, ID',
-  availability: 'Tersedia untuk Pekerjaan / Kontrak',
-  headline: {
-    lead: 'Full Stack Developer berfokus pada',
-    highlight: 'sistem web performa tinggi',
-    tail: ', arsitektur data real-time, dan implementasi antarmuka yang presisi.',
-  },
   summary:
     'Lulusan S1 Teknik Informatika Universitas Telkom Purwokerto (IPK 3.81). Berpengalaman merancang REST API, pipeline streaming WebSocket latensi rendah, basis data relasional (PostgreSQL & MySQL), serta aplikasi web reaktif modern berbasis Next.js dan TypeScript.',
   email: 'addharuqutni@gmail.com',
@@ -21,20 +14,11 @@ export const profile = {
   github: 'https://github.com/Addharuqutni',
 }
 
-/** Route halaman. Dipakai Header, Projects, dan App. */
+/** Route halaman. Dipakai Projects, ProjectsPage, dan App. */
 export const routes = {
   home: '/',
   projects: '/proyek',
 }
-
-export const navLinks = [
-  { label: 'Keahlian', href: '#keahlian' },
-  { label: 'Pendidikan', href: '#pendidikan' },
-  { label: 'Pengalaman', href: '#pengalaman' },
-  { label: 'Proyek', href: '#proyek' },
-  { label: 'Sertifikasi', href: '#sertifikasi' },
-  { label: 'Kontak', href: '#kontak' },
-]
 
 /**
  * Ikon teknologi: `devicon` memakai SVG Devicon self-host di /public/icons,

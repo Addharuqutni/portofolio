@@ -15,7 +15,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <main id="main" className="page-shell space-y-28 overflow-x-clip px-5 pb-24 sm:space-y-36 sm:px-8">
+    <main id="main" className="page-shell space-y-28 px-5 pb-24 sm:space-y-36 sm:px-8">
       <Hero />
       <Skills />
       <Education />

@@ -18,7 +18,7 @@ export default function Experience() {
           <span data-progress className="block h-full w-full origin-top bg-accent" />
         </span>
 
-      <ol data-spotlight className="glass relative divide-y divide-glass-line rounded-2xl px-6 sm:px-8">
+      <ol data-spotlight className="glass relative divide-y divide-glass-line rounded-lg px-6 sm:px-8">
         {experiences.map((item, i) => (
           <li
             key={`${item.company}-${item.period}`}

@@ -1,15 +1,13 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText)
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 const MOTION = '(prefers-reduced-motion: no-preference)'
 
 /**
  * Efek GSAP yang sulit dibuat dengan CSS saja, dipasang lewat atribut data:
- * - [data-split]    → judul dipecah per huruf, naik dari balik mask saat dimuat.
  * - [data-progress] → garis yang terisi mengikuti scroll (timeline pengalaman).
  * - [data-parallax] → isi visual bergeser pelan di dalam bingkainya saat discroll.
  * - [data-magnetic] → tombol tertarik ke arah kursor.
@@ -20,27 +18,7 @@ export function useGsapEffects(route) {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add({ motion: MOTION, reduce: '(prefers-reduced-motion: reduce)' }, (context) => {
-        const { motion } = context.conditions
-
-        // autoSplit memecah ulang saat font selesai dimuat / lebar berubah; animasi dibuat di onSplit.
-        const splits = gsap.utils.toArray('[data-split]').map((el) =>
-          SplitText.create(el, {
-            type: 'words,chars',
-            wordsClass: 'split-word',
-            mask: 'words',
-            autoSplit: true,
-            onSplit: (self) =>
-              gsap.from(
-                self.chars,
-                motion
-                  ? { yPercent: 115, rotate: 6, duration: 0.95, ease: 'expo.out', stagger: 0.018, delay: 0.15 }
-                  : // Reduced motion: tanpa gerak, cukup memudar.
-                    { autoAlpha: 0, duration: 0.5, stagger: 0.008, delay: 0.1 },
-              ),
-          }),
-        )
-
+      mm.add(MOTION, () => {
         // Garis progres tidak menggeser konten, jadi tetap aktif saat reduced motion.
         gsap.utils.toArray('[data-progress]').forEach((el) => {
           gsap.fromTo(
@@ -53,8 +31,6 @@ export function useGsapEffects(route) {
             },
           )
         })
-
-        return () => splits.forEach((split) => split.revert())
       })
 
       mm.add(MOTION, () => {

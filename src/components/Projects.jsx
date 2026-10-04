@@ -116,31 +116,34 @@ export default function Projects() {
         subtitle="Sistem nyata yang telah dirancang, diuji, dan diimplementasikan."
       />
 
-      <div ref={rootRef} data-reveal className="space-y-8">
-        <div
-          ref={trackRef}
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Daftar proyek yang bergerak otomatis"
-          tabIndex={0}
-          className="no-scrollbar flex gap-4 overflow-x-auto py-4 [mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)]"
-        >
-          {[0, 1].map((copy) =>
-            slides.map((project, i) => (
-              <div
-                key={`${copy}-${project.title}`}
-                role={copy ? undefined : 'group'}
-                aria-roledescription={copy ? undefined : 'slide'}
-                aria-label={copy ? undefined : `${i + 1} dari ${slides.length}: ${project.title}`}
-                // Salinan kedua hanya untuk ilusi tak berujung: disembunyikan dari pembaca layar dan Tab.
-                aria-hidden={copy ? true : undefined}
-                inert={copy ? true : undefined}
-                className="flex w-[86%] shrink-0 *:w-full sm:w-[calc((100%-1rem)/2)]"
-              >
-                <ProjectCard project={project} index={i} reveal={false} compact />
-              </div>
-            )),
-          )}
+      <div ref={rootRef} data-reveal data-carousel className="space-y-8">
+        {/* Full-bleed: keluar dari page-shell (80rem) sampai tepi viewport. */}
+        <div className="relative left-1/2 w-screen -translate-x-1/2">
+          <div
+            ref={trackRef}
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Daftar proyek yang bergerak otomatis"
+            tabIndex={0}
+            className="no-scrollbar flex gap-4 overflow-x-auto py-4 [mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)]"
+          >
+            {[0, 1].map((copy) =>
+              slides.map((project, i) => (
+                <div
+                  key={`${copy}-${project.title}`}
+                  role={copy ? undefined : 'group'}
+                  aria-roledescription={copy ? undefined : 'slide'}
+                  aria-label={copy ? undefined : `${i + 1} dari ${slides.length}: ${project.title}`}
+                  // Salinan kedua hanya untuk ilusi tak berujung: disembunyikan dari pembaca layar dan Tab.
+                  aria-hidden={copy ? true : undefined}
+                  inert={copy ? true : undefined}
+                  className="flex w-[86%] max-w-[34rem] shrink-0 *:w-full sm:w-[calc((100%-1rem)/2)]"
+                >
+                  <ProjectCard project={project} index={i} reveal={false} compact />
+                </div>
+              )),
+            )}
+          </div>
         </div>
 
         <div className="flex justify-center">

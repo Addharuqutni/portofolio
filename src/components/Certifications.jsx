@@ -27,7 +27,7 @@ export default function Certifications() {
               data-reveal
               data-spotlight
               data-tilt
-              className="glass relative flex flex-col gap-5 rounded-2xl p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
+              className="glass relative flex flex-col gap-5 rounded-lg p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
             >
               <div className="flex items-start justify-between gap-3">
                 <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${tone.icon}`}>
