@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { ToastProvider } from './context/ToastContext.jsx'
-import { useReveal, useSpotlight } from './hooks/useScrollEffects.js'
+import { useReveal } from './hooks/useScrollEffects.js'
 import { useGsapEffects } from './hooks/useGsapEffects.js'
+import { useCursorGlow } from './hooks/useCursorGlow.js'
 import { routes } from './data/portfolio.js'
 import Footer from './components/Footer.jsx'
+import ScrollProgress from './components/ScrollProgress.jsx'
 import HomePage from './pages/HomePage.jsx'
 import ProjectsPage from './pages/ProjectsPage.jsx'
 
@@ -26,8 +28,8 @@ function useRoute() {
 export default function App() {
   const route = useRoute()
   useReveal(route)
-  useSpotlight()
   useGsapEffects(route)
+  useCursorGlow()
 
   // Halaman baru selalu dibuka dari atas.
   useEffect(() => {
@@ -36,11 +38,10 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <div aria-hidden="true" className="ambient">
-        <span />
-        <span />
-        <span />
-      </div>
+      <ScrollProgress />
+
+      {/* Pena sorot kursor: cahaya radial yang mengikuti pointer. */}
+      <div aria-hidden="true" className="cursor-glow" />
 
       {/* Skip link tetap dipertahankan: tanpa nav, ini lompatan keyboard pertama ke konten. */}
       <a

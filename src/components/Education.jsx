@@ -1,53 +1,47 @@
 import { education } from '../data/portfolio.js'
 import SectionHeading from './SectionHeading.jsx'
 
-/** Seksi 02 — Pendidikan formal. */
-export default function Education() {
+/**
+ * Pendidikan — ledger, bukan dua kartu.
+ *
+ * Dua entri tidak mengisi dua kontainer berbingkai; yang membuatnya terbaca adalah
+ * kolom periode yang sejajar di kiri. IPK ditulis mono karena memang angka ukuran,
+ * satu-satunya tempat mono tepat dipakai di seksi ini.
+ */
+export default function Education({ className = '' }) {
   return (
-    <section id="pendidikan" aria-labelledby="pendidikan-title" className="space-y-10">
+    <section id="pendidikan" aria-labelledby="pendidikan-title" className={`space-y-6 ${className}`}>
       <SectionHeading
         id="pendidikan-title"
-        index="02"
         title="Pendidikan"
         subtitle="Latar belakang akademik formal di bidang rekayasa perangkat lunak."
       />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <ol data-reveal className="divide-y divide-line border-y border-line">
         {education.map((item) => (
-          <article
+          <li
             key={`${item.title}-${item.institution}`}
-            data-reveal
-            data-spotlight
-            data-tilt
-            className="glass relative flex flex-col gap-6 overflow-hidden rounded-lg p-6 transition-colors duration-200 hover:border-glass-strong hover:bg-glass-hover sm:p-7"
+            className="flex flex-col gap-2 py-5 sm:flex-row sm:items-baseline sm:gap-8"
           >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-2 -top-6 font-display text-[7rem] font-bold leading-none tracking-tighter text-white/[0.05] select-none"
-            >
-              {item.level}
-            </span>
-
-            <div className="relative flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span className="rounded-md bg-ink px-2 py-0.5 font-mono text-[11px] font-medium text-canvas">
-                {item.level}
-              </span>
-              <time className="font-mono text-xs text-muted">{item.period}</time>
-              {item.highlight && (
-                <span className="rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">
-                  {item.highlight}
-                </span>
-              )}
+            <div className="flex shrink-0 items-baseline gap-3 sm:w-52 sm:flex-col sm:gap-1">
+              <time className="font-mono text-[13px] text-muted">{item.period}</time>
+              <span className="text-[13px] text-muted">{item.level}</span>
             </div>
 
-            <div className="relative space-y-2">
-              <h3 className="font-display text-xl font-semibold tracking-tight text-ink">{item.title}</h3>
-              <p className="text-sm text-body">{item.institution}</p>
+            <div className="flex-1 space-y-1.5">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h3 className="font-display text-lg font-semibold tracking-tight text-ink">{item.title}</h3>
+                {item.highlight && (
+                  // Mono karena ini angka hasil ukur, bukan label hiasan.
+                  <span className="font-mono text-[13px] text-accent">IPK {item.highlight}</span>
+                )}
+              </div>
+              <p className="text-[15px] text-body">{item.institution}</p>
               <p className="text-sm leading-relaxed text-muted">{item.detail}</p>
             </div>
-          </article>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   )
 }
