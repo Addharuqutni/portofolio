@@ -16,7 +16,6 @@ Tidak ada kode yang perlu diubah: gambar terdeteksi otomatis berdasarkan nama fi
 | POS-Web — Aplikasi Kasir | `pos-web.<ext>` |
 | ClipperAI | `clipper-ai.<ext>` |
 | Job Scraper & Application Tracker | `job-tracker.<ext>` |
-| Crypto AI Agent | `crypto-ai-agent.<ext>` |
 
 Nama file dicocokkan dengan `slug` milik proyek di `src/data/portfolio.js` (huruf kecil,
 tanpa peduli besar-kecil saat pencocokan). Ubah `slug` bila ingin nama file lain.

@@ -220,19 +220,6 @@ export const projects = [
       'Otomatisasi pencarian lowongan dari lima portal (JobStreet, LinkedIn, Kalibrr, Glints, Dealls) ke satu dasbor, ditambah pelacak lamaran berbentuk Kanban. Scraper Cheerio dengan fallback Puppeteer, deduplikasi tiga lapis hingga fuzzy match, penjadwalan otomatis, dan analitik lamaran.',
     tags: ['Multi-Source Scraper', 'Fuzzy Deduplication', 'Kanban Tracker'],
   },
-  {
-    title: 'Crypto AI Agent',
-    stack: 'Python • ccxt • WebSocket • Telegram Bot',
-    badge: 'Trading Agent',
-    slug: 'crypto-ai-agent',
-    cover: null,
-    featured: false,
-    repo: 'https://github.com/Addharuqutni/crypto-ai-agent',
-    demo: null,
-    description:
-      'Agent Python yang memantau harga kripto dan menyusun analisis teknikal otomatis: EMA, RSI, MACD, ATR, ADX, Fibonacci, hingga struktur pasar seperti support/resistance dan liquidity sweep. Memindai pair bervolume tertinggi, mendeteksi sinyal, menyusun rencana risiko, dan mengirim alert Telegram.',
-    tags: ['Analisis Teknikal', 'Market Structure', 'Alert Telegram'],
-  },
 ]
 
 export const education = [

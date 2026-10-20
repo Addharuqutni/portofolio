@@ -29,6 +29,37 @@
   /* Lebar maksimum kontainer halaman. Ubah di sini saja: header, konten, dan footer
      memakai utility `page-shell` sehingga selalu sejajar. 80rem = 1280px. */
   --page-max: 80rem;
+
+  /* Skala spasi semantik. Jarak antarseksi bukan satu nilai yang diulang: nilainya
+     mengikuti bobot konten, supaya ritme halaman terasa disengaja.
+     - `section`     → pemisah standar antar seksi besar.
+     - `section-lg`  → seksi utama yang perlu ruang ekstra (Proyek).
+     - `section-sm`  → dua seksi yang masih satu kelompok (Pendidikan + Pengalaman). */
+  --space-section: 7rem;
+  --space-section-lg: 8.5rem;
+  --space-section-sm: 4.5rem;
+  --space-group: 2.5rem;
+}
+
+/* Jarak vertikal antarseksi. Dipakai HomePage; nilainya dari skala di atas. */
+@utility section-space {
+  margin-top: var(--space-section);
+}
+@utility section-space-lg {
+  margin-top: var(--space-section-lg);
+}
+@utility section-space-sm {
+  margin-top: var(--space-section-sm);
+}
+
+/* Responsif: di layar kecil skala diturunkan proporsional, bukan diubah satu-satu. */
+@media (max-width: 640px) {
+  :root {
+    --space-section: 4.5rem;
+    --space-section-lg: 5.5rem;
+    --space-section-sm: 3rem;
+    --space-group: 2rem;
+  }
 }
 
 /* Kontainer halaman: dipakai oleh main dan Footer. */
@@ -39,6 +70,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Skala tipografi dasar. Naik dari default 16px ke 17px agar teks kecil
+     (label, chip, metadata) ikut terbaca tanpa perlu menaikkan satu per satu.
+     Semua ukuran rem di bawahnya bergeser proporsional. */
+  font-size: 17px;
 }
 
 body {
@@ -93,19 +128,6 @@ button:not(:disabled),
   display: none;
 }
 
-/* Grid garis halus + cahaya aksen di belakang hero, memudar ke bawah. */
-.bg-hero-grid {
-  background-image:
-    radial-gradient(ellipse 50% 40% at 85% 10%, rgb(184 243 92 / 0.08), transparent 70%),
-    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    48px 48px,
-    48px 48px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, #000 35%, transparent 80%);
-}
-
 /* Panel kaca: dipakai sebagai utility agar bisa dikombinasikan dengan varian hover:.
    Sengaja tanpa backdrop-filter: yang ada di belakang kartu hanya gradient ambient yang sudah lembut,
    jadi blur nyaris tak terlihat bedanya tapi memaksa GPU menghitung ulang tiap frame scroll.
@@ -129,59 +151,6 @@ button:not(:disabled),
    Sisakan hanya garis atas inset yang memberi kesan kaca. */
 [data-carousel] .glass {
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
-}
-
-/* Latar ambient: orb cahaya yang melayang, memberi warna untuk dibiaskan panel kaca.
-   Gradient radial (bukan filter blur) agar murah dirender; hanya transform yang dianimasikan. */
-.ambient {
-  position: fixed;
-  inset: 0;
-  z-index: -20;
-  overflow: hidden;
-  pointer-events: none;
-}
-.ambient > span {
-  position: absolute;
-  width: 60vmax;
-  height: 60vmax;
-  border-radius: 9999px;
-  will-change: transform;
-  contain: strict;
-}
-.ambient > span:nth-child(1) {
-  top: -25vmax;
-  right: -15vmax;
-  background: radial-gradient(circle, rgb(184 243 92 / 0.16), transparent 62%);
-  animation: orb-a 22s ease-in-out infinite alternate;
-}
-.ambient > span:nth-child(2) {
-  bottom: -30vmax;
-  left: -20vmax;
-  background: radial-gradient(circle, rgb(124 196 255 / 0.14), transparent 62%);
-  animation: orb-b 28s ease-in-out infinite alternate;
-}
-.ambient > span:nth-child(3) {
-  top: 30%;
-  left: 35%;
-  width: 45vmax;
-  height: 45vmax;
-  background: radial-gradient(circle, rgb(167 139 250 / 0.1), transparent 62%);
-  animation: orb-c 34s ease-in-out infinite alternate;
-}
-@keyframes orb-a {
-  to {
-    transform: translate(-30vw, 35vh) scale(1.15);
-  }
-}
-@keyframes orb-b {
-  to {
-    transform: translate(35vw, -30vh) scale(0.9);
-  }
-}
-@keyframes orb-c {
-  to {
-    transform: translate(-25vw, -20vh) scale(1.2);
-  }
 }
 
 /* Scroll reveal: hanya aktif setelah JS menandai elemen, jadi konten tak pernah tersembunyi tanpa JS.
@@ -238,59 +207,6 @@ button:not(:disabled),
   animation: enter-up 900ms var(--ease-out-expo) var(--enter-delay, 0ms) both;
 }
 
-/* Spotlight mengikuti kursor di kartu; posisi --x/--y diisi useSpotlight. */
-[data-spotlight] {
-  isolation: isolate;
-  /* Potong kilau sapuan yang digeser keluar kartu. */
-  overflow: clip;
-}
-[data-spotlight]::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), rgb(184 243 92 / 0.09), transparent 60%);
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-[data-spotlight]:hover::before {
-  opacity: 1;
-}
-/* Kilau kaca: pita cahaya diagonal yang menyapu panel saat hover. */
-[data-spotlight]::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.07) 50%, transparent 60%);
-  transform: translateX(-100%);
-  opacity: 0;
-}
-[data-spotlight]:hover::after {
-  opacity: 1;
-  transform: translateX(100%);
-  transition: transform 1100ms var(--ease-out-expo);
-}
-
-/* Tilt 3D mengikuti kursor (--rx/--ry dari useSpotlight). Hanya perangkat dengan hover,
-   dan tidak selama reveal berjalan agar transform tidak bentrok. */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  [data-tilt]:not(.reveal-pending) {
-    transition:
-      transform 600ms var(--ease-out-expo),
-      translate 200ms ease,
-      border-color 200ms ease,
-      background-color 200ms ease;
-  }
-  [data-tilt]:not(.reveal-pending):hover {
-    transform: perspective(1000px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
-  }
-}
-
 /* CTA utama: kilau berkala supaya mata tertuju ke aksi utama. */
 .btn-shine {
   position: relative;
@@ -332,6 +248,262 @@ button:not(:disabled),
   }
 }
 
+/* ── Motion graphics ────────────────────────────────────────────────────────
+   Semua efek di bawah hanya memakai transform/opacity (murah di GPU) dan
+   dimatikan lewat blok prefers-reduced-motion di bagian bawah file. */
+
+/* Judul hero: tiap kata naik dari balik garis potong, berurutan. */
+.word-rise {
+  display: inline-block;
+  animation: word-rise 1100ms var(--ease-out-expo) both;
+  animation-delay: var(--word-delay, 0ms);
+}
+@keyframes word-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em) rotate(1.5deg);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Orbital HUD: cincin radar yang berputar berlawanan arah. */
+.orbit-spin {
+  transform-origin: center;
+  animation: orbit-spin 26s linear infinite;
+}
+.orbit-spin-reverse {
+  transform-origin: center;
+  animation: orbit-spin 34s linear infinite reverse;
+}
+.orbit-spin-fast {
+  transform-origin: center;
+  animation: orbit-spin 12s linear infinite;
+}
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sapuan radar: sektor cahaya yang berputar penuh. */
+.orbit-sweep {
+  transform-origin: center;
+  animation: orbit-spin 7s linear infinite;
+}
+
+/* Denyut inti & cincin gelombang. */
+.orbit-pulse {
+  transform-origin: center;
+  animation: orbit-pulse 3.2s ease-in-out infinite;
+}
+@keyframes orbit-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.orbit-wave {
+  transform-origin: center;
+  animation: orbit-wave 3.6s var(--ease-out-expo) infinite;
+}
+@keyframes orbit-wave {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.55);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+/* Garis dash yang mengalir di sepanjang busur. */
+.orbit-dash {
+  animation: orbit-dash 5s linear infinite;
+}
+@keyframes orbit-dash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+/* Marquee: pita teks/stack yang mengalir tanpa henti. */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 38s) linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-host:hover .marquee,
+.marquee-host:focus-within .marquee {
+  animation-play-state: paused;
+}
+
+/* Bilah progres baca di tepi atas viewport (scroll-driven native).
+   Disembunyikan bila browser tidak mendukung animation-timeline. */
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 60;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-info));
+  box-shadow: 0 0 12px rgb(184 243 92 / 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    opacity: 1;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Kata per kata (SplitText) ───────────────────────────────────────────────
+   Kata naik dari balik garis potong saat induknya mendapat .is-revealed.
+   Mengikuti pola reveal di atas: tanpa JS (tanpa .reveal-pending) kata tampil utuh. */
+.split-word {
+  display: inline-block;
+  transition: transform var(--split-duration, 620ms) var(--ease-out-expo);
+  transition-delay: var(--split-delay, 0ms);
+}
+.reveal-pending .split-word {
+  transform: translateY(110%);
+}
+.reveal-pending.is-revealed .split-word {
+  transform: none;
+}
+
+/* ── Pena sorot kursor ──────────────────────────────────────────────────────
+   Cahaya radial yang mengikuti pointer. Posisi dari --cursor-x/--cursor-y
+   (useCursorGlow). z-index -5: di atas latar ambient, di bawah semua konten.
+   Dua lapis: halo luas + inti terang, supaya jelas terlihat tanpa menyilaukan. */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+  background:
+    radial-gradient(
+      220px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+      rgb(184 243 92 / 0.16),
+      transparent 62%
+    ),
+    radial-gradient(
+      620px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+      rgb(124 196 255 / 0.09),
+      transparent 70%
+    );
+}
+.has-cursor-glow .cursor-glow {
+  opacity: 1;
+}
+
+/* ── Cincin conic yang berputar: aksen hero yang jelas bergerak ────────────*/
+.spin-ring {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgb(184 243 92 / 0.5) 40deg,
+    transparent 90deg,
+    transparent 180deg,
+    rgb(124 196 255 / 0.35) 220deg,
+    transparent 270deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1px));
+  animation: spin-ring 18s linear infinite;
+}
+@keyframes spin-ring {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Gerak pada motif proyek ────────────────────────────────────────────────
+   Tiga gerak dipakai ulang: aliran garis putus-putus, denyut simpul, dan sapuan
+   pemindai. Semua hanya menyentuh stroke/opacity/transform, jadi murah di GPU. */
+.motif-dash {
+  animation: motif-dash 6s linear infinite;
+}
+@keyframes motif-dash {
+  to {
+    stroke-dashoffset: -56;
+  }
+}
+
+.motif-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: motif-pulse 2.8s ease-in-out infinite;
+}
+@keyframes motif-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.86);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* Sapuan pemindai: turun perlahan melintasi motif. */
+.motif-sweep {
+  transform-box: fill-box;
+  animation: motif-sweep 3.4s ease-in-out infinite;
+}
+@keyframes motif-sweep {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  15%,
+  70% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
 /* Reduced motion: hilangkan gerak/geser (pemicu gangguan vestibular), tetap pertahankan
    fade & transisi warna supaya antarmuka tetap terasa responsif. */
 @media (prefers-reduced-motion: reduce) {
@@ -342,12 +514,35 @@ button:not(:disabled),
     animation-name: fade;
   }
   .hero-parallax,
-  .ambient > span,
-  .btn-shine::after {
+  .btn-shine::after,
+  .orbit-spin,
+  .orbit-spin-reverse,
+  .orbit-spin-fast,
+  .orbit-sweep,
+  .orbit-pulse,
+  .orbit-wave,
+  .orbit-dash,
+  .marquee,
+  .spin-ring,
+  .motif-dash,
+  .motif-pulse,
+  .motif-sweep {
     animation: none;
   }
-  [data-spotlight]:hover::after {
+  /* Kata per kata & pena sorot: matikan seluruhnya. */
+  .split-word,
+  .reveal-pending .split-word {
+    transform: none;
     transition: none;
+  }
+  .cursor-glow {
+    display: none;
+  }
+  .word-rise {
+    animation-name: fade;
+  }
+  .scroll-progress {
+    opacity: 0;
   }
   .reveal-pending,
   .reveal-pending [data-stagger] > *,

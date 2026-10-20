@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Visual — Oleh-Oleh Banyumas</title>
+<link rel="icon" type="image/png" href="logo.png">
+<style>
+  :root{
+    --canvas:#0a0c10; --raised:#12151b; --line:#1e232c; --line-strong:#2d3440;
+    --ink:#f1f3f6; --body:#c5cbd4; --muted:#8d96a5; --accent:#b8f35c;
+    /* token asli aplikasi */
+    --brand:#2e7d32; --brand-dark:#1b5e20; --brand-light:#e8f5e9; --brand-medium:#c8e6c9;
+    --brand-bg:#DBEAD9; --text:#333333; --muted-app:#6c757d;
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px;
+    --shadow-sm:0 4px 6px rgba(0,0,0,.1); --shadow-md:0 6px 12px rgba(0,0,0,.15); --shadow-lg:0 10px 20px rgba(0,0,0,.15);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--canvas);color:var(--body);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{color:var(--ink);margin:0;letter-spacing:-.02em;line-height:1.2;text-wrap:balance}
+  a{color:var(--accent)}
+  img{display:block;max-width:100%}
+  code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--body)}
+  .shell{max-width:1200px;margin:0 auto;padding:0 24px}
+  .mono{font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .accent{color:var(--accent)}
+
+  /* header */
+  .top{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0d1015,#0a0c10);position:sticky;top:0;z-index:20;backdrop-filter:blur(8px)}
+  .top .shell{display:flex;align-items:center;gap:16px;justify-content:space-between;height:64px}
+  .top img{height:30px;width:auto;filter:brightness(0) invert(1);opacity:.9}
+  .top nav{display:flex;gap:20px;flex-wrap:wrap}
+  .top nav a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .15s}
+  .top nav a:hover{color:var(--ink)}
+  @media(max-width:720px){.top nav{display:none}}
+
+  /* hero */
+  .hero{padding:72px 0 56px;border-bottom:1px solid var(--line)}
+  .hero .kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .hero .kicker span:last-child{height:1px;width:40px;background:var(--accent)}
+  .hero h1{font-size:clamp(32px,6vw,56px);margin-bottom:18px}
+  .hero p{max-width:640px;margin:0;color:var(--body);font-size:16px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+  .chip{border:1px solid var(--line-strong);border-radius:999px;padding:4px 12px;font:11px ui-monospace,monospace;color:var(--body)}
+
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:32px;flex-wrap:wrap}
+  .sec-head h2{font-size:24px}
+  .sec-head p{margin:0;color:var(--muted);font-size:14px}
+
+  /* tokens */
+  .grid{display:grid;gap:16px}
+  .grid > *{min-width:0}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media(max-width:900px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .card{background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .card h3{font-size:14px;margin-bottom:10px}
+  .swatch{height:64px;border-radius:6px;border:1px solid rgba(255,255,255,.08);margin-bottom:10px}
+  .swatch-name{font:12px ui-monospace,monospace;color:var(--ink)}
+  .swatch-sub{font:11px ui-monospace,monospace;color:var(--muted)}
+  .type-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .type-row:last-child{border-bottom:0}
+  .type-row strong{color:var(--ink);letter-spacing:normal}
+
+  /* component stage — latar asli aplikasi */
+  .stage{background:var(--brand-bg);border-radius:10px;padding:24px;color:var(--text)}
+  .stage h4{color:var(--brand-dark);margin-bottom:14px;font-size:14px;letter-spacing:0}
+  .demo-nav{background:#fff;border-radius:8px;box-shadow:var(--shadow-sm);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .demo-nav img{height:28px}
+  .demo-nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;font-size:13px;font-family:Poppins,system-ui,sans-serif}
+  .demo-nav li{color:#333}
+  .demo-nav li.on{color:var(--brand);font-weight:600}
+
+  .demo-btn{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--brand);background:#fff;color:var(--brand);border-radius:50px;height:52px;padding:0 32px;font-weight:600;font-family:Poppins,system-ui,sans-serif;font-size:15px;cursor:default;transition:all .3s}
+  .demo-btn:hover{background:var(--brand);color:#fff}
+  .demo-btn.solid{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .demo-btn.solid:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+
+  .demo-card{background:#fff;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-sm);max-width:260px;transition:transform .3s,box-shadow .3s;font-family:Poppins,system-ui,sans-serif}
+  .demo-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+  .demo-card .ph{height:120px;background:linear-gradient(135deg,#c8e6c9,#8bc34a);position:relative}
+  .demo-card .ph span{position:absolute;left:10px;bottom:10px;background:rgba(46,125,50,.92);color:#fff;border-radius:4px;font-size:10px;padding:3px 8px}
+  .demo-card .bd{padding:14px}
+  .demo-card h5{margin:0 0 6px;font-size:15px;font-weight:600;color:var(--brand)}
+  .demo-card p{margin:0 0 10px;font-size:12px;color:var(--muted-app)}
+  .demo-card .price{margin:0 0 12px;font-weight:600;color:var(--brand);font-size:14px}
+  .demo-card .cta{display:block;text-align:center;background:var(--brand-light);color:var(--brand);border-radius:4px;padding:7px;font-size:12px;text-decoration:none;border:1px solid transparent}
+  .demo-card .cta:hover{background:var(--brand-medium);color:var(--brand-dark)}
+
+  .demo-badge{display:inline-flex;align-items:center;gap:5px;background:var(--brand);color:#fff;border-radius:4px;padding:3px 8px;font-size:11px}
+  .demo-inputrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .demo-inputrow input,.demo-inputrow select{flex:1;min-width:150px;padding:10px 12px;border:1px solid #dee2e6;border-radius:6px;font:13px Poppins,system-ui,sans-serif;background:#fff;color:#333}
+  .demo-inputrow input:focus,.demo-inputrow select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 .2rem rgba(46,125,50,.15)}
+  .demo-inputrow button{border:0;border-radius:6px;background:var(--brand);color:#fff;padding:0 20px;font:13px Poppins,system-ui,sans-serif;cursor:pointer}
+  .demo-inputrow button:hover{background:var(--brand-dark)}
+
+  .demo-admin{background:#f8f9fa;border-radius:8px;overflow:hidden;display:flex;min-height:200px}
+  .demo-admin .side{width:150px;background:#343a40;padding:12px;color:rgba(255,255,255,.75);font:12px Poppins,system-ui,sans-serif}
+  .demo-admin .side div{padding:7px 8px;border-radius:4px;margin-bottom:2px}
+  .demo-admin .side div.on{background:rgba(255,255,255,.1);color:#fff}
+  .demo-admin .body{flex:1;padding:16px;background:#f8f9fa;color:#333;font-family:Poppins,system-ui,sans-serif}
+  .stat{background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.08);padding:12px 14px;display:inline-block;min-width:150px}
+  .stat small{display:block;color:var(--muted-app);font-size:11px;margin-bottom:4px}
+  .stat strong{font-size:20px;color:#333}
+
+  /* gallery */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .tabs button{border:1px solid var(--line-strong);background:transparent;color:var(--body);border-radius:999px;padding:7px 16px;font:12px ui-monospace,monospace;cursor:pointer}
+  .tabs button[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#0a0c10;font-weight:600}
+  .shot-grid{display:grid;gap:20px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  @media(max-width:760px){.shot-grid{grid-template-columns:1fr}}
+  figure.shot{margin:0;background:var(--raised);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  figure.shot button{display:block;width:100%;padding:0;border:0;background:transparent;cursor:zoom-in;overflow:hidden;position:relative;aspect-ratio:4/3}
+  figure.shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .4s ease}
+  figure.shot button:hover img{transform:scale(1.02)}
+  figure.shot figcaption{padding:12px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid var(--line)}
+  figure.shot figcaption strong{font-size:13px;color:var(--ink);font-weight:600}
+  figure.shot figcaption span{font:11px ui-monospace,monospace;color:var(--muted)}
+  .tall button{aspect-ratio:4/5}
+  .phone button{aspect-ratio:9/19.5;background:#05070a}
+  .phone img{object-fit:contain}
+
+  dialog.lb{padding:0;border:0;background:transparent;max-width:96vw;max-height:94vh}
+  dialog.lb::backdrop{background:rgba(5,7,10,.9);backdrop-filter:blur(4px)}
+  dialog.lb img{max-width:94vw;max-height:88vh;width:auto;border-radius:8px;border:1px solid var(--line-strong)}
+  dialog.lb img:not([src]){display:none}
+  dialog.lb form{position:fixed;top:12px;right:16px}
+  dialog.lb button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:6px 14px;cursor:pointer}
+  dialog.lb .cap{color:var(--muted);font:12px ui-monospace,monospace;text-align:center;margin-top:10px}
+
+  /* anatomy table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font:11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+  td code{white-space:nowrap}
+  tbody tr:hover{background:rgba(255,255,255,.02)}
+
+  ul.notes{margin:0;padding-left:18px;font-size:14px}
+  ul.notes li{margin-bottom:10px}
+  .ok{color:var(--accent)}
+  .warn{color:#ffcf7a}
+
+  footer{padding:32px 0 56px;color:var(--muted);font:12px ui-monospace,monospace}
+  footer p{margin:0 0 6px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell">
+    <a href="#atas" aria-label="Kembali ke atas"><img src="logo.png" alt="Oleh-Oleh Banyumas"></a>
+    <nav>
+      <a href="#identitas">Identitas</a>
+      <a href="#komponen">Komponen</a>
+      <a href="#peta-halaman">Peta Halaman</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#catatan">Catatan</a>
+    </nav>
+  </div>
+</header>
+
+<main id="atas">
+
+  <div class="hero">
+    <div class="shell">
+      <div class="kicker"><span class="mono">01 — Design Review</span><span></span></div>
+      <h1>Oleh-Oleh Khas Banyumas</h1>
+      <p>Dokumentasi visual Sistem Informasi Geografis toko oleh-oleh Banyumas. Berisi design token, anatomi komponen, peta halaman, dan 30 tangkapan layar nyata dari aplikasi yang berjalan — bukan mockup.</p>
+      <div class="meta">
+        <span class="chip">Laravel 11</span>
+        <span class="chip">Blade</span>
+        <span class="chip">Bootstrap 5.3</span>
+        <span class="chip">Leaflet 1.9.4</span>
+        <span class="chip">Poppins</span>
+        <span class="chip">30 screenshot</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDENTITAS -->
+  <section id="identitas">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>Identitas Visual</h2>
+        <p class="mono">warna · tipografi · bentuk</p>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:28px">
+        <div class="card">
+          <div class="swatch" style="background:#2e7d32"></div>
+          <div class="swatch-name">primary-green</div>
+          <div class="swatch-sub">#2E7D32 · CTA, judul kartu, ikon</div>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background:#1b5e20"></div>
+          <div class="swatch-name">dark-green</div>
+          <div class="swatch-sub">#1B5E20 · judul halaman, hover</div>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background:#e8f5e9"></div>
+          <div class="swatch-name">light-green</div>
+          <div class="swatch-sub">#E8F5E9 · latar tombol sekunder</div>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background:#DBEAD9"></div>
+          <div class="swatch-name">light-bg</div>
+          <div class="swatch-sub">#DBEAD9 · latar halaman publik</div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <h3>Tipografi</h3>
+          <div class="type-row"><span>Hero H1</span><strong style="font-family:Poppins,system-ui;font-size:24px;font-weight:700;color:#2e7d32">Pusat Belanja</strong></div>
+          <div class="type-row"><span class="mono">2.5–4rem / 700</span><strong style="font-size:13px;font-weight:400;color:#8d96a5">Poppins</strong></div>
+          <div class="type-row"><span>Judul seksi</span><strong style="font-family:Poppins,system-ui;font-size:18px;color:#1b5e20">Oleh-oleh khas Banyumas</strong></div>
+          <div class="type-row"><span class="mono">1.75rem / 700</span><strong style="font-size:13px;font-weight:400;color:#8d96a5">Poppins</strong></div>
+          <div class="type-row"><span>Judul kartu</span><strong style="font-family:Poppins,system-ui;font-size:15px;color:#2e7d32">Getuk Goreng H. Sutarjo</strong></div>
+          <div class="type-row"><span class="mono">1.1rem / 600</span><strong style="font-size:13px;font-weight:400;color:#8d96a5">Poppins</strong></div>
+          <div class="type-row"><span>Teks isi</span><strong style="font-size:13px;font-weight:400">1rem / 400 · line-height 1.8</strong></div>
+        </div>
+
+        <div class="card">
+          <h3>Bentuk &amp; Elevasi</h3>
+          <div class="grid g2" style="gap:12px">
+            <div>
+              <div style="height:52px;border:1px solid #2d3440;border-radius:4px;display:grid;place-items:center;font:11px ui-monospace,monospace;color:#8d96a5">radius-sm 4px</div>
+              <p class="mono" style="margin:8px 0 0">badge, tombol detail</p>
+            </div>
+            <div>
+              <div style="height:52px;border:1px solid #2d3440;border-radius:8px;display:grid;place-items:center;font:11px ui-monospace,monospace;color:#8d96a5">radius-md 8px</div>
+              <p class="mono" style="margin:8px 0 0">kartu, peta, panel</p>
+            </div>
+            <div>
+              <div style="height:52px;border:1px solid #2d3440;border-radius:12px;display:grid;place-items:center;font:11px ui-monospace,monospace;color:#8d96a5">radius-lg 12px</div>
+              <p class="mono" style="margin:8px 0 0">container besar</p>
+            </div>
+            <div>
+              <div style="height:52px;border:1px solid #2d3440;border-radius:999px;display:grid;place-items:center;font:11px ui-monospace,monospace;color:#8d96a5">pill 50px</div>
+              <p class="mono" style="margin:8px 0 0">tombol hero</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:16px">
+            <div style="flex:1;height:34px;background:#12151b;box-shadow:0 4px 6px rgba(0,0,0,.1);border:1px solid #2d3440;border-radius:6px;display:grid;place-items:center;font:10px ui-monospace,monospace;color:#8d96a5">shadow-sm</div>
+            <div style="flex:1;height:34px;background:#12151b;box-shadow:0 6px 12px rgba(0,0,0,.15);border:1px solid #2d3440;border-radius:6px;display:grid;place-items:center;font:10px ui-monospace,monospace;color:#8d96a5">shadow-md</div>
+            <div style="flex:1;height:34px;background:#12151b;box-shadow:0 10px 20px rgba(0,0,0,.15);border:1px solid #2d3440;border-radius:6px;display:grid;place-items:center;font:10px ui-monospace,monospace;color:#8d96a5">shadow-lg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KOMPONEN -->
+  <section id="komponen">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>Komponen</h2>
+        <p class="mono">dirender ulang dengan token asli</p>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <h3>Navbar</h3>
+          <div class="stage">
+            <div class="demo-nav">
+              <img src="logo.png" alt="Logo">
+              <ul>
+                <li class="on">Home</li><li>Tentang</li><li>Artikel</li><li>Toko</li><li>Produk</li>
+              </ul>
+            </div>
+          </div>
+          <p class="mono" style="margin:12px 0 0">putih · sticky-top · shadow-sm · logo max-height 35px</p>
+        </div>
+
+        <div class="card">
+          <h3>Tombol</h3>
+          <div class="stage" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <span class="demo-btn">Cari Toko</span>
+            <span class="demo-btn solid">Cari</span>
+          </div>
+          <p class="mono" style="margin:12px 0 0">hero: 220×70 → 300×100 (md) · pill 50px · hover fill hijau</p>
+        </div>
+
+        <div class="card">
+          <h3>Store Card</h3>
+          <div class="stage" style="display:flex;justify-content:center">
+            <div class="demo-card">
+              <div class="ph"><span>Getuk Goreng</span></div>
+              <div class="bd">
+                <h5>Getuk Goreng H. Sutarjo</h5>
+                <p>Jl. Raya Sokaraja No. 102, Sokaraja</p>
+                <span class="demo-badge">🚚 Delivery</span>
+                <a class="cta" href="#" onclick="return false">Detail Toko</a>
+              </div>
+            </div>
+          </div>
+          <p class="mono" style="margin:12px 0 0">foto 180px · hover translateY(-5px) + shadow-md · badge hijau</p>
+        </div>
+
+        <div class="card">
+          <h3>Product Card</h3>
+          <div class="stage" style="display:flex;justify-content:center">
+            <div class="demo-card">
+              <div class="ph"><span>Nopia</span></div>
+              <div class="bd">
+                <h5>Nopia Gula Jawa</h5>
+                <p class="price">Rp 18.000</p>
+                <p style="font-size:11px">🏪 Nopia Makmur</p>
+                <a class="cta" href="#" onclick="return false">Detail Produk</a>
+              </div>
+            </div>
+          </div>
+          <p class="mono" style="margin:12px 0 0">gambar 1:1 · harga hijau 600 · kartu 4 kolom (lg)</p>
+        </div>
+
+        <div class="card">
+          <h3>Filter &amp; Pencarian</h3>
+          <div class="stage">
+            <div class="demo-inputrow" style="margin:0">
+              <input type="text" placeholder="Cari toko atau produk..." aria-label="Cari toko atau produk" readonly>
+              <select aria-label="Semua kategori" style="max-width:180px"><option>Semua Kategori</option></select>
+              <button type="button">Cari</button>
+            </div>
+          </div>
+          <p class="mono" style="margin:12px 0 0">input-group · focus ring hijau 15% · select kategori</p>
+        </div>
+
+        <div class="card">
+          <h3>Peta &amp; Penanda</h3>
+          <div class="stage" style="padding:0;overflow:hidden;position:relative;background:linear-gradient(135deg,#d7e8cf,#b9d8ae)">
+            <div style="height:190px;position:relative">
+              <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:32px 32px"></div>
+              <div style="position:absolute;left:28%;top:38%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:#2e7d32;transform:rotate(-45deg);box-shadow:0 2px 6px rgba(0,0,0,.25)"></div>
+              <div style="position:absolute;left:58%;top:52%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:#2e7d32;transform:rotate(-45deg);box-shadow:0 2px 6px rgba(0,0,0,.25)"></div>
+              <div style="position:absolute;left:44%;top:22%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:#2e7d32;transform:rotate(-45deg);box-shadow:0 2px 6px rgba(0,0,0,.25)"></div>
+              <div style="position:absolute;inset:auto 0 0 0;padding:10px 14px;background:#fff;font:12px Poppins,system-ui;color:#333;display:flex;justify-content:space-between">
+                <span><strong>Detail Toko</strong> · popup Leaflet</span><span style="color:#2e7d32">Google Maps ↗</span>
+              </div>
+            </div>
+          </div>
+          <p class="mono" style="margin:12px 0 0">Leaflet + OSM · tinggi 70vh (50vh mobile) · popup 220px</p>
+        </div>
+
+        <div class="card" style="grid-column:1/-1">
+          <h3>Panel Admin</h3>
+          <div class="demo-admin">
+            <div class="side">
+              <div class="on">📊 Dashboard</div>
+              <div>🏪 Toko</div>
+              <div>📦 Produk</div>
+              <div>🏷️ Kategori</div>
+              <div>⭐ Ulasan</div>
+            </div>
+            <div class="body">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <strong style="font-size:16px">Dashboard</strong>
+                <span style="background:#0d6efd;color:#fff;font-size:11px;padding:5px 10px;border-radius:4px">Ulasan Pending 3</span>
+              </div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <div class="stat"><small>Total Kunjungan</small><strong>12.480</strong></div>
+                <div class="stat"><small>Total Toko</small><strong>8</strong></div>
+                <div class="stat"><small>Total Produk</small><strong>23</strong></div>
+                <div class="stat"><small>Rating Rata-rata</small><strong>4.6</strong></div>
+              </div>
+            </div>
+          </div>
+          <p class="mono" style="margin:12px 0 0">sidebar 250px #343a40 · konten margin-left 250px, padding 2rem · kartu statistik radius 8px</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PETA HALAMAN -->
+  <section id="peta-halaman">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>Peta Halaman</h2>
+        <p class="mono">route · isi · pola layout</p>
+      </div>
+      <div class="card" style="padding:0;overflow:auto">
+        <table>
+          <thead>
+            <tr><th>Halaman</th><th>Route</th><th>Isi Utama</th><th>Pola</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Beranda</td><td><code>/</code></td><td>Hero, peta toko, grid 8 kategori oleh-oleh</td><td>3 seksi vertikal, tanpa sidebar</td></tr>
+            <tr><td>Peta semua toko</td><td><code>/maps</code></td><td>Peta Leaflet layar penuh + marker toko</td><td>Peta 70vh di dalam kartu</td></tr>
+            <tr><td>Cluster map</td><td><code>/cluster-map</code></td><td>Peta sebaran harga produk</td><td>Peta + legenda cluster</td></tr>
+            <tr><td>Daftar toko</td><td><code>/toko</code></td><td>Semua toko aktif</td><td>Grid kartu 3–4 kolom</td></tr>
+            <tr><td>List toko</td><td><code>/list-toko</code></td><td>Pencarian, filter kategori, hasil</td><td>Panel filter + grid kartu</td></tr>
+            <tr><td>Detail toko</td><td><code>/toko/detail-toko/{slug}</code></td><td>Galeri, info, produk, ulasan</td><td>Dua kolom + tab/section</td></tr>
+            <tr><td>Detail produk</td><td><code>/toko/detail-toko/{shop}/produk/{product}</code></td><td>Harga, deskripsi, toko penjual</td><td>Dua kolom gambar–teks</td></tr>
+            <tr><td>Cluster produk</td><td><code>/products/cluster</code></td><td>Produk dikelompokkan per rentang harga</td><td>Grup bertingkat + grid</td></tr>
+            <tr><td>Artikel</td><td><code>/artikel</code></td><td>8 artikel camilan khas</td><td>Grid kartu bergambar</td></tr>
+            <tr><td>Artikel detail</td><td><code>/artikel/getukgoreng</code></td><td>Sejarah, bahan, cara membuat</td><td>Prosa satu kolom + gambar</td></tr>
+            <tr><td>Tentang</td><td><code>/about</code></td><td>Tujuan, tim, alur kerja</td><td>Seksi teks + kartu ikon</td></tr>
+            <tr><td>Login admin</td><td><code>/admin/login</code></td><td>Form email + password</td><td>Kartu tengah, latar polos</td></tr>
+            <tr><td>Dashboard admin</td><td><code>/admin/dashboard</code></td><td>Statistik kunjungan, grafik, aktivitas</td><td>Sidebar + 4 kartu statistik + chart</td></tr>
+            <tr><td>CRUD admin</td><td><code>/admin/shops · products · categories · reviews</code></td><td>Tabel data, form, moderasi ulasan</td><td>Sidebar + tabel + aksi baris</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section id="galeri">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>Galeri Layar</h2>
+        <p class="mono">klik untuk memperbesar</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Kelompok halaman">
+        <button role="tab" aria-selected="true" aria-controls="panel-publik" id="tab-publik">Publik · 11</button>
+        <button role="tab" aria-selected="false" aria-controls="panel-admin" id="tab-admin">Admin · 9</button>
+        <button role="tab" aria-selected="false" aria-controls="panel-komponen" id="tab-komponen">Potongan Komponen · 8</button>
+        <button role="tab" aria-selected="false" aria-controls="panel-mobile" id="tab-mobile">Mobile · 1</button>
+      </div>
+
+      <div class="shot-grid" id="panel-publik" role="tabpanel" aria-labelledby="tab-publik">
+        <figure class="shot"><button data-cap="Beranda — hero, peta, kategori"><img loading="lazy" src="01-home.jpg" alt="Tangkapan layar beranda"></button><figcaption><strong>Beranda</strong><span>/</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Peta semua toko — Leaflet + OSM"><img loading="lazy" src="02-maps.jpg" alt="Tangkapan layar peta semua toko"></button><figcaption><strong>Peta Toko</strong><span>/maps</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Cluster map — sebaran harga produk"><img loading="lazy" src="03-cluster-map.jpg" alt="Tangkapan layar cluster map"></button><figcaption><strong>Cluster Map</strong><span>/cluster-map</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Daftar seluruh toko"><img loading="lazy" src="04-toko.jpg" alt="Tangkapan layar daftar toko"></button><figcaption><strong>Daftar Toko</strong><span>/toko</span></figcaption></figure>
+        <figure class="shot"><button data-cap="List toko — pencarian dan filter kategori"><img loading="lazy" src="05-list-toko.jpg" alt="Tangkapan layar list toko"></button><figcaption><strong>Filter &amp; Pencarian</strong><span>/list-toko</span></figcaption></figure>
+        <figure class="shot tall"><button data-cap="Detail toko — galeri, produk, ulasan"><img loading="lazy" src="06-detail-toko.jpg" alt="Tangkapan layar detail toko"></button><figcaption><strong>Detail Toko</strong><span>/toko/detail-toko/{slug}</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Detail produk"><img loading="lazy" src="07-produk-detail.jpg" alt="Tangkapan layar detail produk"></button><figcaption><strong>Detail Produk</strong><span>/toko/…/produk/{slug}</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Cluster produk berdasarkan harga"><img loading="lazy" src="08-cluster.jpg" alt="Tangkapan layar cluster produk"></button><figcaption><strong>Cluster Produk</strong><span>/products/cluster</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Artikel oleh-oleh khas Banyumas"><img loading="lazy" src="09-artikel.jpg" alt="Tangkapan layar halaman artikel"></button><figcaption><strong>Artikel</strong><span>/artikel</span></figcaption></figure>
+        <figure class="shot tall"><button data-cap="Artikel Getuk Goreng — prosa satu kolom"><img loading="lazy" src="10-artikel-detail.jpg" alt="Tangkapan layar artikel getuk goreng"></button><figcaption><strong>Artikel Detail</strong><span>/artikel/getukgoreng</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Tentang aplikasi"><img loading="lazy" src="11-about.jpg" alt="Tangkapan layar halaman tentang"></button><figcaption><strong>Tentang</strong><span>/about</span></figcaption></figure>
+      </div>
+
+      <div class="shot-grid" id="panel-admin" role="tabpanel" aria-labelledby="tab-admin" hidden>
+        <figure class="shot"><button data-cap="Login admin"><img loading="lazy" src="12-admin-login.jpg" alt="Tangkapan layar login admin"></button><figcaption><strong>Login Admin</strong><span>/admin/login</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Dashboard — statistik, grafik, log pencarian"><img loading="lazy" src="14-admin-dashboard.jpg" alt="Tangkapan layar dashboard admin"></button><figcaption><strong>Dashboard</strong><span>/admin/dashboard</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Manajemen toko — tabel + aksi"><img loading="lazy" src="15-admin-shops.jpg" alt="Tangkapan layar manajemen toko"></button><figcaption><strong>Manajemen Toko</strong><span>/admin/shops</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Manajemen produk"><img loading="lazy" src="16-admin-products.jpg" alt="Tangkapan layar manajemen produk"></button><figcaption><strong>Manajemen Produk</strong><span>/admin/products</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Manajemen kategori"><img loading="lazy" src="17-admin-categories.jpg" alt="Tangkapan layar kategori admin"></button><figcaption><strong>Kategori</strong><span>/admin/categories</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Semua ulasan"><img loading="lazy" src="18-admin-reviews.jpg" alt="Tangkapan layar ulasan admin"></button><figcaption><strong>Ulasan</strong><span>/admin/reviews</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Form tambah toko dengan upload gambar"><img loading="lazy" src="19-admin-shop-create.jpg" alt="Tangkapan layar form tambah toko"></button><figcaption><strong>Tambah Toko</strong><span>/admin/shops/create</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Detail/editor toko"><img loading="lazy" src="21-admin-shop-show.jpg" alt="Tangkapan layar editor toko"></button><figcaption><strong>Editor Toko</strong><span>/admin/shops/{slug}</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Form tambah produk"><img loading="lazy" src="22-admin-product-create.jpg" alt="Tangkapan layar form produk"></button><figcaption><strong>Tambah Produk</strong><span>/admin/products/create</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Moderasi ulasan pending"><img loading="lazy" src="23-admin-reviews-pending.jpg" alt="Tangkapan layar ulasan pending"></button><figcaption><strong>Ulasan Pending</strong><span>/admin/reviews/pending</span></figcaption></figure>
+      </div>
+
+      <div class="shot-grid" id="panel-komponen" role="tabpanel" aria-labelledby="tab-komponen" hidden>
+        <figure class="shot" style="grid-column:1/-1"><button data-cap="Navbar — logo + 5 menu, sticky"><img loading="lazy" src="c-navbar.jpg" alt="Potongan navbar"></button><figcaption><strong>Navbar</strong><span>sticky-top</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Hero — tiga baris judul beranimasi fadeInUp"><img loading="lazy" src="c-hero.jpg" alt="Potongan hero"></button><figcaption><strong>Hero</strong><span>fadeInUp berurutan</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Seksi peta — judul + peta 70vh"><img loading="lazy" src="c-map-section.jpg" alt="Potongan seksi peta"></button><figcaption><strong>Seksi Peta</strong><span>70vh</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Grid kategori — kartu 1:1 dengan overlay hover"><img loading="lazy" src="c-categories.jpg" alt="Potongan grid kategori"></button><figcaption><strong>Grid Kategori</strong><span>hover overlay</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Panel filter — search + kategori + tombol"><img loading="lazy" src="c-filter.jpg" alt="Potongan panel filter"></button><figcaption><strong>Panel Filter</strong><span>card shadow-sm</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Store card — foto 180px, judul, alamat, badge"><img loading="lazy" src="c-store-card.jpg" alt="Potongan store card"></button><figcaption><strong>Store Card</strong><span>hover -5px</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Sidebar admin — 250px, item aktif terang"><img loading="lazy" src="c-admin-sidebar.jpg" alt="Potongan sidebar admin"></button><figcaption><strong>Sidebar Admin</strong><span>250px</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Kartu statistik — angka besar + ikon"><img loading="lazy" src="c-admin-stat.jpg" alt="Potongan kartu statistik"></button><figcaption><strong>Stat Card</strong><span>hover -3px</span></figcaption></figure>
+        <figure class="shot"><button data-cap="Artikel — prosa, subjudul, card tips"><img loading="lazy" src="c-article.jpg" alt="Potongan artikel"></button><figcaption><strong>Prosa Artikel</strong><span>satu kolom</span></figcaption></figure>
+      </div>
+
+      <div class="shot-grid" id="panel-mobile" role="tabpanel" aria-labelledby="tab-mobile" hidden>
+        <figure class="shot phone" style="max-width:360px"><button data-cap="Beranda pada 390px — satu kolom, tombol hero mengecil"><img loading="lazy" src="13-home-mobile.jpg" alt="Tangkapan layar beranda mobile"></button><figcaption><strong>Beranda Mobile</strong><span>390 × 844</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATATAN -->
+  <section id="catatan">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>Catatan Implementasi</h2>
+        <p class="mono">apa yang perlu diketahui saat mendesain ulang</p>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <h3>Kekuatan</h3>
+          <ul class="notes">
+            <li><span class="ok">Konsisten.</span> Satu palet hijau dipakai di seluruh 12 halaman publik dan panel admin; variabel CSS didefinisikan sekali.</li>
+            <li><span class="ok">Fokus fungsi.</span> Peta dan filter adalah alasan situs ini ada — keduanya langsung terlihat di beranda.</li>
+            <li><span class="ok">Mobile-first.</span> Grid kategori turun ke 2 kolom, peta 50vh, menu jadi collapse.</li>
+            <li><span class="ok">Aksesibilitas dasar.</span> Kontras hijau tua di putih aman, tombol punya label teks, gambar punya <code>alt</code>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Peluang Perbaikan</h3>
+          <ul class="notes">
+            <li><span class="warn">Gambar placeholder.</span> Sebagian besar toko memakai <code>default-shop.jpg</code> yang sama, jadi kartu terlihat repetitif.</li>
+            <li><span class="warn">Dua sumber CSS.</span> <code>style.css</code> dan blok <code>&lt;style&gt;</code> inline di layout saling menimpa nilai yang sama.</li>
+            <li><span class="warn">Tipografi.</span> Poppins dimuat dari Google Fonts untuk semua bobot — bisa dipangkas ke 400/600/700.</li>
+            <li><span class="warn">Konfirmasi destruktif.</span> Aksi hapus di admin sebaiknya diberi dialog konfirmasi yang eksplisit.</li>
+            <li><span class="warn">Peta butuh internet.</span> Tile OSM dan CDN Bootstrap/Leaflet tidak di-bundle; offline akan kehilangan tampilan.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="shell">
+  <p>Oleh-Oleh Khas Banyumas — design review dari aplikasi berjalan.</p>
+  <p>Sumber: github.com/Addharuqutni/oleh2banyumas · 30 tangkapan layar 1440px &amp; 390px.</p>
+</footer>
+
+<dialog class="lb" id="lightbox">
+  <form method="dialog"><button>Tutup ✕</button></form>
+  <img id="lb-img" alt="">
+  <p class="cap" id="lb-cap"></p>
+</dialog>
+
+<script>
+  // Tab galeri
+  const tabs = [...document.querySelectorAll('[role=tab]')]
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.setAttribute('aria-selected', String(t === tab))
+        document.getElementById(t.getAttribute('aria-controls')).hidden = t !== tab
+      })
+    })
+  })
+
+  // Lightbox memakai <dialog> native
+  const dlg = document.getElementById('lightbox')
+  const img = document.getElementById('lb-img')
+  const cap = document.getElementById('lb-cap')
+  document.querySelectorAll('figure.shot button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const src = btn.querySelector('img')
+      img.src = src.src
+      img.alt = src.alt
+      cap.textContent = btn.dataset.cap || ''
+      dlg.showModal()
+    })
+  })
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close() })
+</script>
+
+</body>
+</html>

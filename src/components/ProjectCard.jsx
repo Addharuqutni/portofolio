@@ -2,19 +2,19 @@ import { ArrowUpRight, CodeXml } from 'lucide-react'
 import ProjectVisual from './ProjectVisual.jsx'
 
 const linkClass =
-  'group/link inline-flex min-h-11 items-center gap-1.5 rounded-lg px-1 font-mono text-xs text-body transition-colors duration-150 hover:text-accent'
+  'group/link inline-flex min-h-11 items-center gap-1.5 rounded-lg px-1 text-[15px] font-medium text-body transition-colors duration-150 hover:text-accent'
 
 /** Tautan kode & demo; bila tidak ada, teks keterangan agar tinggi kartu tetap seragam. */
 function ProjectLinks({ project }) {
   if (!project.repo && !project.demo) {
     return (
-      <p className="-mb-2 flex min-h-11 items-center border-t border-glass-line pt-2 font-mono text-xs text-muted">
+      <p className="-mb-2 flex min-h-11 items-center border-t border-line pt-2 text-[15px] text-muted">
         Tidak ada tautan publik
       </p>
     )
   }
   return (
-    <div className="-mb-2 flex flex-wrap gap-x-5 border-t border-glass-line pt-2">
+    <div className="-mb-2 flex flex-wrap gap-x-5 border-t border-line pt-2">
       {project.repo && (
         <a
           href={project.repo}
@@ -58,8 +58,10 @@ function ProjectLinks({ project }) {
  * - 'row' → visual di samping teks mulai layar md, untuk halaman daftar proyek.
  * `reveal={false}` mematikan animasi muncul per kartu (dipakai carousel beranda).
  * `compact` → isi ringkas: gambar, judul, tech stack, tautan (dipakai carousel beranda).
+ * `featured` → beri tanda kecil pada proyek unggulan agar carousel punya hierarki,
+ *   bukan sembilan kartu yang tampak setara.
  */
-export default function ProjectCard({ project, index, layout = 'stack', reveal = true, compact = false }) {
+export default function ProjectCard({ project, index, layout = 'stack', reveal = true, compact = false, featured = false }) {
   const row = layout === 'row'
 
   return (
@@ -67,26 +69,30 @@ export default function ProjectCard({ project, index, layout = 'stack', reveal =
       // Di dalam carousel, reveal dipasang pada carousel-nya; slide yang tersembunyi
       // ke samping tidak boleh menunggu IntersectionObserver per kartu.
       data-reveal={reveal || undefined}
-      data-spotlight
-      data-tilt
-      className={`glass group relative flex flex-col rounded-lg transition-[border-color,background-color,translate] duration-200 hover:-translate-y-1 hover:border-glass-strong hover:bg-glass-hover ${
+      className={`group relative flex flex-col rounded-lg border border-line bg-raised transition-colors duration-200 hover:border-line-strong ${
         compact ? 'gap-5 p-5 sm:p-6' : 'gap-6 p-6 sm:p-7'
       } ${row ? 'md:flex-row md:items-center md:gap-8 lg:gap-10' : ''}`}
     >
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-6 top-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100"
-      />
-
       <ProjectVisual project={project} index={index} className={row ? 'md:w-[42%] md:shrink-0' : ''} />
 
       {compact ? (
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="flex-1 space-y-3">
-            <h3 className="font-display text-lg font-semibold leading-snug tracking-tight text-ink">{project.title}</h3>
-            <ul aria-label="Tech stack" className="flex flex-wrap gap-1.5 font-mono text-[11px] text-muted">
-              {project.stack.split('•').map((tech) => (
-                <li key={tech} className="rounded-md border border-glass-line bg-glass px-2 py-0.5">
+        <div className="flex flex-1 flex-col gap-3">
+          <div className="flex-1 space-y-2">
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="font-display text-xl font-semibold leading-snug tracking-tight text-ink">
+                {project.title}
+              </h3>
+              {featured && (
+                <span className="mt-0.5 shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[13px] font-medium text-accent">
+                  Unggulan
+                </span>
+              )}
+            </div>
+            <p className="text-[15px] text-muted">{project.badge}</p>
+            <ul aria-label="Tech stack" className="flex flex-wrap gap-x-1.5 gap-y-1 text-[14px] text-muted">
+              {project.stack.split('•').map((tech, j) => (
+                <li key={tech} className="flex items-center gap-1.5">
+                  {j > 0 && <span aria-hidden="true" className="text-line-strong">·</span>}
                   {tech.trim()}
                 </li>
               ))}
@@ -95,30 +101,20 @@ export default function ProjectCard({ project, index, layout = 'stack', reveal =
           <ProjectLinks project={project} />
         </div>
       ) : (
-        <div className="flex flex-1 flex-col gap-6">
-          <div className="flex items-start justify-between gap-3">
-            <span
-              aria-hidden="true"
-              className="font-display text-4xl font-bold leading-none tracking-tighter text-line-strong transition-colors duration-200 group-hover:text-accent"
-            >
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <span className="rounded-full border border-glass-strong px-3 py-1 font-mono text-[11px] text-body">
-              {project.badge}
-            </span>
-          </div>
-
+        <div className="flex flex-1 flex-col gap-4">
           <div className="flex-1 space-y-3">
-            <div className="space-y-1.5">
-              <h3 className="font-display text-xl font-semibold tracking-tight text-ink">{project.title}</h3>
-              <p className="font-mono text-xs text-muted">{project.stack}</p>
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="font-display text-2xl font-semibold tracking-tight text-ink">{project.title}</h3>
+              <span className="shrink-0 text-[14px] text-muted">{project.badge}</span>
             </div>
-            <p className="text-sm leading-relaxed text-body">{project.description}</p>
+            <p className="text-[15px] text-muted">{project.stack}</p>
+            <p className="text-base leading-relaxed text-body">{project.description}</p>
           </div>
 
-          <ul data-stagger className="flex flex-wrap gap-1.5 font-mono text-[11px] text-muted">
+          <ul data-stagger className="flex flex-wrap gap-x-2 gap-y-1.5 text-[14px] text-muted">
             {project.tags.map((tag, j) => (
-              <li key={tag} style={{ '--i': j }} className="rounded-md border border-glass-line bg-glass px-2.5 py-1">
+              <li key={tag} style={{ '--i': j }} className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent" />
                 {tag}
               </li>
             ))}
