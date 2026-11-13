@@ -4,7 +4,6 @@ import { useReveal } from './hooks/useScrollEffects.js'
 import { useGsapEffects } from './hooks/useGsapEffects.js'
 import { useCursorGlow } from './hooks/useCursorGlow.js'
 import { routes } from './data/portfolio.js'
-import Footer from './components/Footer.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
 import HomePage from './pages/HomePage.jsx'
 import ProjectsPage from './pages/ProjectsPage.jsx'
@@ -52,8 +51,6 @@ export default function App() {
       </a>
 
       {route === 'proyek' ? <ProjectsPage /> : <HomePage />}
-
-      <Footer />
     </ToastProvider>
   )
 }

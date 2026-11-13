@@ -5,11 +5,7 @@ import SectionHeading from './SectionHeading.jsx'
 export default function Experience({ className = '' }) {
   return (
     <section id="pengalaman" aria-labelledby="pengalaman-title" className={`space-y-6 ${className}`}>
-      <SectionHeading
-        id="pengalaman-title"
-        title="Pengalaman Kerja"
-        subtitle="Riwayat kontribusi profesional dalam pengembangan perangkat lunak dan desain."
-      />
+      <SectionHeading id="pengalaman-title" title="Pengalaman Kerja" />
 
       <div className="relative">
         {/* Garis progres: terisi oleh GSAP ScrollTrigger mengikuti posisi scroll. */}

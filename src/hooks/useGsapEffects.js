@@ -10,7 +10,6 @@ const MOTION = '(prefers-reduced-motion: no-preference)'
  * Efek GSAP yang sulit dibuat dengan CSS saja, dipasang lewat atribut data:
  * - [data-progress] → garis yang terisi mengikuti scroll (timeline pengalaman).
  * - [data-parallax] → isi visual bergeser pelan di dalam bingkainya saat discroll.
- * - [data-magnetic] → tombol tertarik ke arah kursor.
  * Dijalankan ulang tiap ganti halaman; animasi, ScrollTrigger, dan listener dibersihkan otomatis.
  */
 export function useGsapEffects(route) {
@@ -45,34 +44,6 @@ export function useGsapEffects(route) {
             },
           )
         })
-      })
-
-      mm.add(`(hover: hover) and ${MOTION}`, () => {
-        const cleanups = gsap.utils.toArray('[data-magnetic]').map((el) => {
-          const toX = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3' })
-          const toY = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3' })
-
-          const onMove = (event) => {
-            // Pusat dihitung tanpa offset yang sedang diterapkan agar tarikan tidak menumpuk.
-            const rect = el.getBoundingClientRect()
-            const cx = rect.left - gsap.getProperty(el, 'x') + rect.width / 2
-            const cy = rect.top - gsap.getProperty(el, 'y') + rect.height / 2
-            toX((event.clientX - cx) * 0.3)
-            toY((event.clientY - cy) * 0.3)
-          }
-          const onLeave = () => {
-            toX(0)
-            toY(0)
-          }
-
-          el.addEventListener('pointermove', onMove)
-          el.addEventListener('pointerleave', onLeave)
-          return () => {
-            el.removeEventListener('pointermove', onMove)
-            el.removeEventListener('pointerleave', onLeave)
-          }
-        })
-        return () => cleanups.forEach((cleanup) => cleanup())
       })
 
       return () => mm.revert()

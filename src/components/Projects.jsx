@@ -140,11 +140,7 @@ export default function Projects({ className = '' }) {
 
   return (
     <section id="proyek" aria-labelledby="proyek-title" className={`space-y-6 ${className}`}>
-      <SectionHeading
-        id="proyek-title"
-        title="Proyek Pilihan"
-        subtitle="Sistem nyata yang telah dirancang, diuji, dan diimplementasikan."
-      />
+      <SectionHeading id="proyek-title" title="Proyek" />
 
       <div ref={rootRef} data-reveal data-carousel className="space-y-6">
         {/* Full-bleed: keluar dari page-shell (80rem) sampai tepi viewport. */}
@@ -170,7 +166,7 @@ export default function Projects({ className = '' }) {
                   inert={copy ? true : undefined}
                   className="flex w-[85%] shrink-0 sm:w-[52%] lg:w-[38%] xl:w-[31%] *:w-full"
                 >
-                  <ProjectCard project={project} index={i} reveal={false} compact featured={project.featured} />
+                  <ProjectCard project={project} index={i} reveal={false} compact />
                 </div>
               )),
             )}

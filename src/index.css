@@ -26,8 +26,8 @@
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Lebar maksimum kontainer halaman. Ubah di sini saja: header, konten, dan footer
-     memakai utility `page-shell` sehingga selalu sejajar. 80rem = 1280px. */
+  /* Lebar maksimum kontainer halaman. Ubah di sini saja: konten memakai utility
+     `page-shell` sehingga selalu sejajar. 80rem = 1280px. */
   --page-max: 80rem;
 
   /* Skala spasi semantik. Jarak antarseksi bukan satu nilai yang diulang: nilainya
@@ -62,7 +62,7 @@
   }
 }
 
-/* Kontainer halaman: dipakai oleh main dan Footer. */
+/* Kontainer halaman: dipakai oleh main. */
 @utility page-shell {
   margin-inline: auto;
   max-width: var(--page-max);
@@ -205,28 +205,6 @@ button:not(:disabled),
 }
 .animate-enter {
   animation: enter-up 900ms var(--ease-out-expo) var(--enter-delay, 0ms) both;
-}
-
-/* CTA utama: kilau berkala supaya mata tertuju ke aksi utama. */
-.btn-shine {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.btn-shine::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%);
-  transform: translateX(-100%);
-  animation: shine 4.5s ease-in-out 2s infinite;
-}
-@keyframes shine {
-  30%,
-  100% {
-    transform: translateX(100%);
-  }
 }
 
 /* Scroll-driven (native): hero memudar & naik saat discroll lewat.
@@ -514,7 +492,6 @@ button:not(:disabled),
     animation-name: fade;
   }
   .hero-parallax,
-  .btn-shine::after,
   .orbit-spin,
   .orbit-spin-reverse,
   .orbit-spin-fast,

@@ -12,11 +12,7 @@ import TechIcon from './TechIcon.jsx'
 export default function Skills({ className = '' }) {
   return (
     <section id="keahlian" aria-labelledby="keahlian-title" className={`space-y-6 ${className}`}>
-      <SectionHeading
-        id="keahlian-title"
-        title="Keahlian Teknis"
-        subtitle="Teknologi dan stack yang digunakan dalam lingkungan produksi."
-      />
+      <SectionHeading id="keahlian-title" title="Keahlian Teknis" />
 
       <dl data-reveal className="divide-y divide-line border-y border-line">
         {skillGroups.map((group) => (

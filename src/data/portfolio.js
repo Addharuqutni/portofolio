@@ -156,6 +156,32 @@ export const projects = [
     tags: ['Design System', 'Information Architecture', 'Interactive Flow'],
   },
   {
+    title: 'PEMIRA — E-Voting Mahasiswa',
+    stack: 'Next.js 15 • Prisma • SQLite WAL • NextAuth',
+    badge: 'E-Voting',
+    slug: 'pemira-e-voting',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/e-voting_mahasiswa/main/shots/02-bilik-suara.png',
+    featured: true,
+    repo: 'https://github.com/Addharuqutni/e-voting_mahasiswa',
+    demo: null,
+    description:
+      'Sistem e-voting Pemilihan Raya Mahasiswa Teknik Telekomunikasi: bilik suara berantre dengan batas pemilih bersamaan, surat suara rahasia tanpa kolom identitas pemilih, sesi terkunci satu login aktif per akun, panel admin KPU dengan impor DPT dari CSV, serta rekap hasil yang baru terbuka setelah pemungutan ditutup.',
+    tags: ['Surat Suara Rahasia', 'Antrean Bilik FIFO', 'Panel Admin KPU'],
+  },
+  {
+    title: 'Smart Posyandu',
+    stack: 'React • Express • PostgreSQL • Tailwind • PWA',
+    badge: 'Offline-First',
+    slug: 'smart-posyandu',
+    cover: 'https://raw.githubusercontent.com/Addharuqutni/smart-posyandu/main/docs/screenshot/kanal-publik.png',
+    featured: true,
+    repo: 'https://github.com/Addharuqutni/smart-posyandu',
+    demo: null,
+    description:
+      'PWA pencatatan posyandu dan pemantauan tumbuh kembang balita yang tetap bisa dipakai kader saat tanpa sinyal, lalu tersinkron otomatis ketika kembali online. Mencatat antropometri bulanan dengan grafik KMS, alur validasi bidan dan tindak lanjut gizi risiko, rekap cakupan per dusun dengan ekspor CSV, hingga enkripsi NIK dan pencadangan basis data.',
+    tags: ['Mode Luring & Sinkron', 'Grafik KMS Balita', 'Enkripsi NIK'],
+  },
+  {
     title: 'SIMRS — Sistem Informasi Rumah Sakit',
     stack: 'React 19 • TypeScript • Express • PostgreSQL',
     badge: 'Healthcare',

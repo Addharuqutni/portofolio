@@ -58,10 +58,8 @@ function ProjectLinks({ project }) {
  * - 'row' → visual di samping teks mulai layar md, untuk halaman daftar proyek.
  * `reveal={false}` mematikan animasi muncul per kartu (dipakai carousel beranda).
  * `compact` → isi ringkas: gambar, judul, tech stack, tautan (dipakai carousel beranda).
- * `featured` → beri tanda kecil pada proyek unggulan agar carousel punya hierarki,
- *   bukan sembilan kartu yang tampak setara.
  */
-export default function ProjectCard({ project, index, layout = 'stack', reveal = true, compact = false, featured = false }) {
+export default function ProjectCard({ project, index, layout = 'stack', reveal = true, compact = false }) {
   const row = layout === 'row'
 
   return (
@@ -78,16 +76,9 @@ export default function ProjectCard({ project, index, layout = 'stack', reveal =
       {compact ? (
         <div className="flex flex-1 flex-col gap-3">
           <div className="flex-1 space-y-2">
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="font-display text-xl font-semibold leading-snug tracking-tight text-ink">
-                {project.title}
-              </h3>
-              {featured && (
-                <span className="mt-0.5 shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[13px] font-medium text-accent">
-                  Unggulan
-                </span>
-              )}
-            </div>
+            <h3 className="font-display text-xl font-semibold leading-snug tracking-tight text-ink">
+              {project.title}
+            </h3>
             <p className="text-[15px] text-muted">{project.badge}</p>
             <ul aria-label="Tech stack" className="flex flex-wrap gap-x-1.5 gap-y-1 text-[14px] text-muted">
               {project.stack.split('•').map((tech, j) => (

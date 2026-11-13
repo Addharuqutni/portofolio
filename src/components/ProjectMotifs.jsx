@@ -406,8 +406,83 @@ function Kanban() {
   )
 }
 
+/** 10 — Ballot: surat suara tercoblos, kotak suara, dan bilah hasil. */
+function Ballot() {
+  const bars = [
+    [54, 62],
+    [76, 44],
+    [98, 30],
+    [120, 18],
+  ]
+  return (
+    <>
+      <Frame />
+      {/* Surat suara */}
+      <rect x="42" y="34" width="96" height="112" rx="4" fill={FILL_SOFT} stroke={LINE} />
+      {[48, 62, 76].map((y, i) => (
+        <g key={y}>
+          <rect x="54" y={y} width="10" height="10" rx="2" fill={i === 1 ? ACCENT_FILL : 'none'} stroke={i === 1 ? ACCENT : LINE} />
+          <rect x="72" y={y + 2} width={44 - i * 6} height="5" rx="2.5" fill="rgb(255 255 255 / 0.2)" />
+        </g>
+      ))}
+      {/* Kotak suara */}
+      <path d="M156 76 H232 L244 168 H144 Z" fill={FILL_SOFT} stroke={LINE} />
+      <rect x="150" y="60" width="88" height="16" rx="3" fill="rgb(255 255 255 / 0.12)" stroke={LINE} />
+      <rect x="186" y="64" width="16" height="4" rx="2" fill={ACCENT} className="motif-pulse" />
+      {/* Bilah hasil */}
+      <g>
+        {bars.map(([y, w], i) => (
+          <g key={y}>
+            <rect x="256" y={y} width="44" height="8" rx="4" fill="rgb(255 255 255 / 0.07)" />
+            <rect x="256" y={y} width={w * 0.36} height="8" rx="4" fill={i === 0 ? ACCENT : 'rgb(184 243 92 / 0.45)'} />
+          </g>
+        ))}
+      </g>
+      <line x1="42" y1="164" x2="300" y2="164" stroke={LINE} />
+    </>
+  )
+}
+
+/** 11 — Growth: kurva tumbuh kembang balita di atas pita status gizi. */
+function Growth() {
+  const points = [
+    [46, 150],
+    [82, 138],
+    [118, 132],
+    [154, 114],
+    [190, 104],
+    [226, 88],
+    [262, 74],
+  ]
+  const line = points.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join(' ')
+  return (
+    <>
+      <Frame />
+      {/* Pita zona gizi: baik, kurang, buruk */}
+      <g opacity="0.9">
+        <rect x="40" y="40" width="240" height="12" rx="6" fill="rgb(184 243 92 / 0.22)" />
+        <rect x="40" y="40" width="160" height="12" rx="6" fill="rgb(184 243 92 / 0.4)" />
+        <rect x="40" y="40" width="80" height="12" rx="6" fill={ACCENT} />
+      </g>
+      {/* Kurva pertumbuhan */}
+      <path d={line} fill="none" stroke={ACCENT} strokeWidth="2" className="motif-dash" />
+      {points.map(([x, y], i) => (
+        <circle key={x} cx={x} cy={y} r={i === points.length - 1 ? 4 : 2.5} fill={i === points.length - 1 ? '#b8f35c' : 'rgb(255 255 255 / 0.4)'} />
+      ))}
+      {/* Kartu catatan bulanan */}
+      <g>
+        <rect x="196" y="118" width="84" height="54" rx="4" fill="rgb(255 255 255 / 0.06)" stroke={LINE} />
+        <rect x="206" y="128" width="40" height="5" rx="2.5" fill="rgb(255 255 255 / 0.28)" />
+        <rect x="206" y="140" width="62" height="4" rx="2" fill="rgb(255 255 255 / 0.16)" />
+        <rect x="206" y="150" width="48" height="4" rx="2" fill="rgb(255 255 255 / 0.16)" />
+      </g>
+      <line x1="40" y1="176" x2="280" y2="176" stroke={LINE} />
+    </>
+  )
+}
+
 /** Urutan motif; dipakai sebagai cadangan bila slug belum dipetakan. */
-const FALLBACK = [Crypto, Iot, MapRoute, Reader, Hospital, ErpGrid, Receipt, VideoTimeline, Kanban]
+const FALLBACK = [Crypto, Iot, MapRoute, Reader, Hospital, ErpGrid, Receipt, VideoTimeline, Kanban, Ballot, Growth]
 
 /** Peta slug → motif. Slug tak dikenal memakai urutan `index`. */
 const BY_SLUG = {
@@ -415,6 +490,8 @@ const BY_SLUG = {
   'platform-dashboard-iot': Iot,
   'website-oleh-oleh-banyumas': MapRoute,
   'kirea-reading-platform': Reader,
+  'pemira-e-voting': Ballot,
+  'smart-posyandu': Growth,
   simrs: Hospital,
   'erp-medium': ErpGrid,
   'pos-web': Receipt,

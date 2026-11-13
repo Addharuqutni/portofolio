@@ -34,9 +34,6 @@ export default function ProjectsPage() {
           >
             Semua Proyek
           </h1>
-          <p className="max-w-2xl text-[15px] leading-relaxed text-pretty text-muted">
-            Daftar lengkap {projects.length} proyek: sistem nyata yang dirancang, diuji, dan diimplementasikan.
-          </p>
         </div>
       </header>
 
